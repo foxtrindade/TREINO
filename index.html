@@ -3,29 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Minha Rotina de Treino</title>
+<title>Rotina de Treino</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root {
-    --bg:#0f0f0f; --surface:#1a1a1a; --surface2:#242424; --border:#2e2e2e;
-    --accent:#c8f060; --accent2:#60c8f0; --accent3:#f0a060;
-    --text:#f0efe8; --muted:#888; --danger:#f06060; --success:#60f0a0;
-    --mono:'DM Mono',monospace; --sans:'DM Sans',sans-serif;
-    --r:10px; --r-sm:6px;
-  }
+  :root{--bg:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;--border:#2e2e2e;--accent:#c8f060;--accent2:#60c8f0;--accent3:#f0a060;--text:#f0efe8;--muted:#888;--success:#60f0a0;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--r:10px;--r-sm:6px;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
   body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;font-size:15px;}
-
   .header{position:sticky;top:0;z-index:100;background:rgba(15,15,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
   .header-title{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.06em;}
   .header-sub{font-size:11px;color:var(--muted);margin-top:2px;}
   .btn-reset{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;}
-
   .week-tabs{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none;}
   .week-tabs::-webkit-scrollbar{display:none;}
   .week-tab{flex-shrink:0;font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:7px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
   .week-tab.active{background:var(--accent);color:#0f0f0f;border-color:var(--accent);font-weight:500;}
-
   .days{padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
   .day-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s;}
   .day-card.completed{border-color:var(--accent);}
@@ -46,7 +37,6 @@
   .chevron.open{transform:rotate(180deg);}
   .day-body{display:none;padding:0 14px 14px;}
   .day-body.open{display:block;}
-
   .ex-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
   .ex-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;}
   .ex-item.ex-done{border-color:rgba(96,240,160,.4);}
@@ -73,17 +63,14 @@
   .set-done-btn svg{width:12px;height:12px;stroke:var(--bg);stroke-width:2.5;fill:none;opacity:0;}
   .set-done-btn.done svg{opacity:1;}
   .ex-obs{font-size:11px;color:var(--muted);padding:8px 0 0;line-height:1.5;border-top:1px solid var(--border);margin-top:6px;}
-
   .run-block{background:var(--surface2);border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);}
   .run-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 12px;border-bottom:1px solid var(--border);}
   .run-row:last-child{border-bottom:none;}
   .run-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;}
   .run-val{font-size:13px;font-weight:500;color:var(--accent2);}
-
   .rest-block{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
   .nota-block{background:rgba(240,160,96,.08);border:1px solid rgba(240,160,96,.2);border-radius:var(--r-sm);padding:10px 12px;margin-top:10px;font-size:11px;color:var(--accent3);line-height:1.6;}
   .nota-label{font-family:var(--mono);font-size:9px;letter-spacing:.06em;margin-bottom:4px;opacity:.7;}
-
   .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,15,15,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:10px 16px 20px;display:flex;align-items:center;justify-content:space-between;}
   .progress-info{font-family:var(--mono);font-size:11px;color:var(--muted);}
   .progress-bar-wrap{flex:1;margin:0 12px;height:4px;background:var(--border);border-radius:99px;overflow:hidden;}
@@ -95,18 +82,12 @@
 </style>
 </head>
 <body>
-
 <div class="header">
-  <div>
-    <div class="header-title">ROTINA DE TREINO</div>
-    <div class="header-sub">70 kg · 1,76 m · 38 anos</div>
-  </div>
-  <button class="btn-reset" onclick="confirmReset()">↺ reset dia</button>
+  <div><div class="header-title">ROTINA DE TREINO</div><div class="header-sub">70 kg · 1,76 m · 38 anos · Ciclo 2</div></div>
+  <button class="btn-reset" onclick="confirmReset()">↺ reset semana</button>
 </div>
-
 <div class="week-tabs" id="weekTabs"></div>
 <div class="days" id="daysContainer"></div>
-
 <div class="bottom-bar">
   <div class="progress-info" id="progressInfo">0 / 0</div>
   <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
@@ -115,180 +96,226 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const WEEKS = {
-  2:{
-    label:"SEM 2 · BASE",
-    days:[
-      {id:"s2_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"6 exercicios · ~52 min",
-       exercicios:[
-        {id:"s2_seg_1",nome:"Supino reto com halter",series:3,reps:"12",obs:"+2 kg vs sem. 1. Fase excentrica 3 s."},
-        {id:"s2_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 1. Amplitude completa."},
-        {id:"s2_seg_3",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"+2 kg se execucao limpa na sem. 1."},
-        {id:"s2_seg_4",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"+2 kg vs sem. 1."},
-        {id:"s2_seg_5",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"Igual sem. 1. Monitorar deltoides anterior."},
-        {id:"s2_seg_6",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 1 se execucao solida."},
-       ],nota:"Progressao de 2 kg nos compostos onde a sem. 1 foi solida. Nunca progrida carga e reps ao mesmo tempo."},
-      {id:"s2_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~48 min",
-       exercicios:[
-        {id:"s2_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"12",obs:"+2 kg vs sem. 1. Manter amplitude total."},
-        {id:"s2_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"+2 kg vs sem. 1. Amplitude escapular."},
-        {id:"s2_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg. Meta: 20-24 kg."},
-        {id:"s2_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"+2 kg vs sem. 1."},
-        {id:"s2_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"+2 kg vs sem. 1."},
-       ],nota:"Progressao em carga em todos os exercicios onde a sem. 1 foi bem executada."},
-      {id:"s2_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~57 min",
-       exercicios:[
-        {id:"s2_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"12",obs:"+2 kg vs sem. 1. Amplitude > carga sempre."},
-        {id:"s2_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 1. Pausa 2 s no topo."},
-        {id:"s2_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"+10 kg vs sem. 1 — compensa 3 series."},
-        {id:"s2_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"Leve progressao. Consolidar padrao."},
-        {id:"s2_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg se execucao solida na sem. 1."},
-        {id:"s2_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg se completou 15 reps com facilidade."},
-       ],nota:"Leg press com +10 kg compensa ausencia da 4a serie."},
-      {id:"s2_qui",name:"Quinta-feira",tipo:"corr",titulo:"Intervalado — ajustado pos-analise",meta:"40 min total · progressao",
-       run:[
-        {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00-8:30/km"},
-        {label:"TIROS",val:"5x 4 min · HR Zone 4 · pace 4:43-4:50/km desde o tiro 1"},
-        {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo (nao por HR Zone)"},
-        {label:"VOLTA CALMA",val:"6 min zona 1 · pace ~7:30-8:00/km"},
-       ],nota:"+1 tiro (4 para 5). Recuperacao 1:30 por tempo fixo. Segurar tiro 1 no pace dos tiros 3-4 da sem. 1 (4:43-4:50/km). Nao parar nas recuperacoes."},
-      {id:"s2_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"5 exercicios · ~40 min",
-       exercicios:[
-        {id:"s2_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg se sem. 1 sem rotacao de tronco."},
-        {id:"s2_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"30 s cada",obs:"+10 s vs sem. 1."},
-        {id:"s2_sex_3",nome:"Prancha lateral",series:3,reps:"40 s cada",obs:"+10 s vs sem. 1."},
-        {id:"s2_sex_4",nome:"Set conjugado: remador + twist c/ 10 kg",series:3,reps:"12+10 s",obs:"Manter carga — qualidade do twist."},
-        {id:"s2_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"20 s cada",obs:"+5 s vs sem. 1."},
-       ],nota:"Progressao nas pranchas por tempo (+10 s). Pallof progride em carga somente se execucao perfeita."},
-      {id:"s2_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa — Zona 2",meta:"60-65 min · +5 min vs sem. 1",
-       run:[
-        {label:"DURACAO",val:"60-65 min"},
-        {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-        {label:"PROGRESSAO",val:"+5 min vs semana 1"},
-        {label:"TERRENO",val:"Plano ou levemente ondulado"},
-       ],nota:"Adicione 5 min vs sem. 1. Progressao de volume e a principal alavanca para elevar o HDL."},
-      {id:"s2_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
-       nota:"Verifique HRV e recovery score no Garmin. Esses dados calibram os ajustes das semanas seguintes."},
-    ]
-  },
-  3:{
-    label:"SEM 3 · CARGA",
-    days:[
-      {id:"s3_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"6 exercicios · ~54 min",
-       exercicios:[
-        {id:"s3_seg_1",nome:"Supino reto com halter",series:3,reps:"10",obs:"+2 kg vs sem. 2. Reps reduzidas para aumentar carga."},
-        {id:"s3_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 2. Manter amplitude completa."},
-        {id:"s3_seg_3",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-        {id:"s3_seg_4",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-        {id:"s3_seg_5",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"+2 kg se ombro anterior respondeu bem na sem. 2."},
-        {id:"s3_seg_6",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 2."},
-       ],nota:"Semana 3 prioriza progressao de carga. Supino cai de 12 para 10 reps para sustentar carga maior."},
-      {id:"s3_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~50 min",
-       exercicios:[
-        {id:"s3_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10",obs:"+2 kg vs sem. 2. Reps reduzidas para sustentar carga."},
-        {id:"s3_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-        {id:"s3_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg vs sem. 2. Meta: 22-26 kg."},
-        {id:"s3_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-        {id:"s3_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-       ],nota:"Puxada reduz para 10 reps para sustentar progressao de carga — mesmo estimulo com maior tensao mecanica."},
-      {id:"s3_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~58 min",
-       exercicios:[
-        {id:"s3_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10",obs:"+2 kg vs sem. 2. Reps reduzidas para mais carga."},
-        {id:"s3_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 2. Pausa 2 s no topo."},
-        {id:"s3_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"+10 kg vs sem. 2."},
-        {id:"s3_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"+2 kg vs sem. 2."},
-        {id:"s3_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg vs sem. 2."},
-        {id:"s3_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg vs sem. 2."},
-       ],nota:"Bulgaro reduz para 10 reps — maior carga com amplitude completa. Leg press continua progressao de +10 kg."},
-      {id:"s3_qui",name:"Quinta-feira",tipo:"corr",titulo:"Intervalado — semana 3",meta:"44 min total · progressao de ritmo",
-       run:[
-        {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
-        {label:"TIROS",val:"5x 4 min · HR Zone 4 · pace-alvo 4:35-4:45/km"},
-        {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
-        {label:"VOLTA CALMA",val:"6 min zona 1"},
-       ],nota:"Mesmo numero de tiros da sem. 2 (5x), mas pace-alvo mais rapido: 4:35-4:45/km. Progressao por intensidade, nao por volume. So avance no pace se a sem. 2 foi bem executada nos 5 tiros."},
-      {id:"s3_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"5 exercicios · ~40 min",
-       exercicios:[
-        {id:"s3_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg vs sem. 2."},
-        {id:"s3_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"35 s cada",obs:"+5 s vs sem. 2."},
-        {id:"s3_sex_3",nome:"Prancha lateral",series:3,reps:"45 s cada",obs:"+5 s vs sem. 2."},
-        {id:"s3_sex_4",nome:"Set conjugado: remador + twist c/ 12 kg",series:3,reps:"12+10 s",obs:"+2 kg no twist vs sem. 2. So se execucao perfeita."},
-        {id:"s3_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"20 s cada",obs:"Manter tempo — adicionar pausa de 2 s na posicao extendida."},
-       ],nota:"Progressao moderada no core — pranchas +5 s, twist +2 kg. Mobilidade de quadril e tornozelo antes da corrida longa de sabado."},
-      {id:"s3_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa — Zona 2",meta:"65-70 min · progressao de volume",
-       run:[
-        {label:"DURACAO",val:"65-70 min"},
-        {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-        {label:"PROGRESSAO",val:"+5 min vs semana 2"},
-        {label:"TERRENO",val:"Plano ou leve ondulacao"},
-       ],nota:"Adicione 5 min vs sem. 2. Volume acumulado de zona 2 e o principal driver do HDL — mantenha a progressao semanal de +5 min. Hidrate bem antes: 500 ml nas 2h anteriores."},
-      {id:"s3_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
-       nota:"Semana 3 e a mais exigente ate agora — descanse bem. HRV baixo na segunda indica que o corpo ainda nao recuperou: reduza a carga do supino e bulgaro se necessario."},
-    ]
-  },
-  4:{
-    label:"SEM 4 · DELOAD",
-    days:[
-      {id:"s4_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"6 exercicios · ~40 min · deload",
-       exercicios:[
-        {id:"s4_seg_1",nome:"Supino reto com halter",series:3,reps:"10",obs:"Carga da sem. 1 (-4 kg vs sem. 3). Execucao impecavel."},
-        {id:"s4_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"Carga da sem. 1. Foco em amplitude maxima."},
-        {id:"s4_seg_3",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"Carga da sem. 1. Sem falha."},
-        {id:"s4_seg_4",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"Carga da sem. 1. Sessao leve — nao force."},
-        {id:"s4_seg_5",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"Carga reduzida. Preservar ombro anterior."},
-        {id:"s4_seg_6",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"Carga reduzida. Movimento fluido."},
-       ],nota:"DELOAD: volume e carga reduzidos intencionalmente. O objetivo nao e progressao — e recuperacao muscular e articular para a proxima fase de 4 semanas."},
-      {id:"s4_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~38 min · deload",
-       exercicios:[
-        {id:"s4_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10",obs:"Carga da sem. 1. Enfase em amplitude e contracao."},
-        {id:"s4_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"Carga da sem. 1. Movimento controlado."},
-        {id:"s4_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"Carga da sem. 1. Sem compensacao de tronco."},
-        {id:"s4_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"Carga da sem. 1. ROM completo."},
-        {id:"s4_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"Carga da sem. 1."},
-       ],nota:"Deload de costas: mesma carga da sem. 1. Use para corrigir qualquer compensacao tecnica que apareceu nas semanas anteriores."},
-      {id:"s4_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~45 min · deload",
-       exercicios:[
-        {id:"s4_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10",obs:"Carga da sem. 1. Foco em profundidade e equiibrio."},
-        {id:"s4_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"Carga da sem. 1. Contracao maxima no topo."},
-        {id:"s4_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"Carga da sem. 1. Amplitude total."},
-        {id:"s4_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"Carga da sem. 1."},
-        {id:"s4_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"Carga da sem. 1."},
-        {id:"s4_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"Carga da sem. 1. Sem dor patelofemoral."},
-       ],nota:"Deload de inferiores e critico antes da proxima fase — joelhos, quadril e coluna se recuperam melhor com volume reduzido."},
-      {id:"s4_qui",name:"Quinta-feira",tipo:"corr",titulo:"Corrida leve — Deload",meta:"30 min · zona 1-2 apenas",
-       run:[
-        {label:"DURACAO",val:"30 min continuos"},
-        {label:"FC ALVO",val:"Abaixo de 135 bpm · zona 1-2 apenas"},
-        {label:"RITMO",val:"Muito confortavel — conversa facil"},
-        {label:"OBJETIVO",val:"Recuperacao ativa, nao estimulo"},
-       ],nota:"Semana de deload: NENHUM tiro, nenhuma zona 4. Corrida leve de recuperacao ativa. Se sentir cansaco, substitua por caminhada de 30-40 min."},
-      {id:"s4_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"4 exercicios · ~30 min · deload",
-       exercicios:[
-        {id:"s4_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"Carga da sem. 1. Foco em estabilizacao."},
-        {id:"s4_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"20 s cada",obs:"Volta ao tempo inicial. Qualidade > duração."},
-        {id:"s4_sex_3",nome:"Prancha lateral",series:3,reps:"30 s cada",obs:"Volta ao tempo inicial."},
-        {id:"s4_sex_4",nome:"Perdigueiro com 3 kg",series:3,reps:"15 s cada",obs:"Sem o set conjugado esta semana. Mais leve."},
-       ],nota:"Core deload: 4 exercicios, sem o set conjugado. Reserve 15 min para mobilidade completa — quadril, toracao toracica, tornozelo. Essa mobilidade vai melhorar a qualidade da proxima fase."},
-      {id:"s4_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa reduzida — Deload",meta:"45 min · zona 2 leve",
-       run:[
-        {label:"DURACAO",val:"45 min"},
-        {label:"FC ALVO",val:"125-138 bpm · zona 2 baixa"},
-        {label:"REDUCAO",val:"-20 min vs semana 3"},
-        {label:"TERRENO",val:"Plano — sem ondulacoes"},
-       ],nota:"Deload aerobico: -20 min vs sem. 3. Zona 2 baixa (FC 125-138), nao o teto. O volume aerobico acumulado das 3 semanas anteriores continua fazendo efeito — o deload nao perde esse ganho."},
-      {id:"s4_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao completa",
-       nota:"Fim do primeiro ciclo de 4 semanas. Na semana 5 a progressao reinicia com cargas acima das maximas atingidas na sem. 3. O deload e o que permite isso."},
-    ]
-  }
+const WEEKS={
+  5:{label:"SEM 5 · RETOMADA",days:[
+    {id:"s5_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~60 min",
+     exercicios:[
+      {id:"s5_seg_1",nome:"Supino reto com halter",series:3,reps:"12",obs:"+2 kg vs sem. 3. Continuidade da progressao."},
+      {id:"s5_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 3. Amplitude completa."},
+      {id:"s5_seg_3",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"Cabecas lateral e medial. Aquece cotovelo para o testa."},
+      {id:"s5_seg_4",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"+2 kg vs sem. 3. Cabeca longa apos pushdown."},
+      {id:"s5_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"+2 kg vs sem. 3."},
+      {id:"s5_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"+2 kg vs sem. 3. Monitorar deltoides anterior."},
+      {id:"s5_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 3. Finalizador leve."},
+     ],nota:"Triceps no cross (pushdown) adicionado antes do testa para cobrir todas as cabecas do triceps."},
+    {id:"s5_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~48 min",
+     exercicios:[
+      {id:"s5_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"12",obs:"+2 kg vs sem. 3. Amplitude total."},
+      {id:"s5_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"+2 kg vs sem. 3."},
+      {id:"s5_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg vs sem. 3. Meta: 24-28 kg."},
+      {id:"s5_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"+2 kg vs sem. 3."},
+      {id:"s5_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"+2 kg vs sem. 3."},
+     ],nota:"Continuidade direta das cargas da sem. 3 com +2 kg."},
+    {id:"s5_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~57 min",
+     exercicios:[
+      {id:"s5_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"12",obs:"+2 kg vs sem. 3. Amplitude > carga."},
+      {id:"s5_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 3. Pausa 2 s no topo."},
+      {id:"s5_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"+10 kg vs sem. 3."},
+      {id:"s5_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"+2 kg vs sem. 3."},
+      {id:"s5_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg vs sem. 3."},
+      {id:"s5_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg vs sem. 3."},
+     ],nota:"Progressao linear de todas as cargas vs sem. 3."},
+    {id:"s5_qui",name:"Quinta-feira",tipo:"corr",titulo:"Intervalado - Retomada",meta:"43 min · transicao de pace",
+     run:[
+      {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
+      {label:"TIROS",val:"5x 4 min · HR Zone 4 · pace 4:35-4:45/km"},
+      {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
+      {label:"VOLTA CALMA",val:"6 min zona 1 · tempo fixo"},
+     ],nota:"Pace de transicao entre sem. 2 e sem. 3. Nao retorne direto ao teto da sem. 3 apos pausa. Se tiro 5 vier abaixo de 4:35 com facilidade, sem. 6 ja retoma pace completo."},
+    {id:"s5_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"5 exercicios · ~40 min",
+     exercicios:[
+      {id:"s5_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg vs sem. 3. Sem rotacao de tronco."},
+      {id:"s5_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"35 s cada",obs:"Retoma tempo da sem. 3."},
+      {id:"s5_sex_3",nome:"Prancha lateral",series:3,reps:"45 s cada",obs:"Retoma tempo da sem. 3."},
+      {id:"s5_sex_4",nome:"Set conjugado: remador + twist c/ 12 kg",series:3,reps:"12+10 s",obs:"Mantem carga da sem. 3."},
+      {id:"s5_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"20 s cada",obs:"Coluna neutra."},
+     ],nota:"Core retoma os tempos da sem. 3 diretamente. Reserve 10 min para mobilidade de quadril e tornozelo."},
+    {id:"s5_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa - Zona 2",meta:"60-65 min · retomada aerobica",
+     run:[
+      {label:"DURACAO",val:"60-65 min"},
+      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
+      {label:"RITMO",val:"Conversa possivel · ~8:00-9:00/km"},
+      {label:"NOTA",val:"Recua 5 min vs sem. 3 - retomada gradual"},
+     ],nota:"Volume recua para 60-65 min. Se sentir facilidade nos ultimos 10 min, sem. 6 retoma 65-70 min."},
+    {id:"s5_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
+     nota:"Verifique HRV e Body Battery no Garmin. Valores baixos na segunda indicam retorno ainda em processamento."},
+  ]},
+  6:{label:"SEM 6 · PROGRESSAO",days:[
+    {id:"s6_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~62 min",
+     exercicios:[
+      {id:"s6_seg_1",nome:"Supino reto com halter",series:3,reps:"10",obs:"+2 kg vs sem. 5. Reps reduzidas para mais carga."},
+      {id:"s6_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 5."},
+      {id:"s6_seg_3",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"+2 kg vs sem. 5."},
+      {id:"s6_seg_4",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+      {id:"s6_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+      {id:"s6_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"+2 kg se ombro respondeu bem."},
+      {id:"s6_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 5."},
+     ],nota:"Supino cai de 12 para 10 reps para sustentar progressao de carga - maior tensao mecanica."},
+    {id:"s6_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~50 min",
+     exercicios:[
+      {id:"s6_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10",obs:"+2 kg vs sem. 5. Reps reduzidas."},
+      {id:"s6_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+      {id:"s6_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg vs sem. 5. Meta: 26-30 kg."},
+      {id:"s6_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+      {id:"s6_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+     ],nota:"Puxada reduz para 10 reps para sustentar progressao de carga."},
+    {id:"s6_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~60 min",
+     exercicios:[
+      {id:"s6_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10",obs:"+2 kg vs sem. 5. Reduz reps para mais carga."},
+      {id:"s6_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 5. Pausa 2 s."},
+      {id:"s6_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"+10 kg vs sem. 5."},
+      {id:"s6_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"+2 kg vs sem. 5."},
+      {id:"s6_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg vs sem. 5."},
+      {id:"s6_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg vs sem. 5."},
+     ],nota:"Bulgaro reduz para 10 reps para sustentar carga maior. Amplitude completa sempre."},
+    {id:"s6_qui",name:"Quinta-feira",tipo:"corr",titulo:"Intervalado - Retomada plena",meta:"43 min · pace completo",
+     run:[
+      {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
+      {label:"TIROS",val:"5x 4 min · HR Zone 4 · pace 4:30-4:40/km"},
+      {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
+      {label:"VOLTA CALMA",val:"6 min zona 1 · tempo fixo"},
+     ],nota:"Retoma o pace completo da sem. 3 (4:30-4:40/km). Referencia: tiro 5 da sem. 2 foi 4:23 com facilidade."},
+    {id:"s6_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"5 exercicios · ~40 min",
+     exercicios:[
+      {id:"s6_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg vs sem. 5."},
+      {id:"s6_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"40 s cada",obs:"+5 s vs sem. 5."},
+      {id:"s6_sex_3",nome:"Prancha lateral",series:3,reps:"50 s cada",obs:"+5 s vs sem. 5."},
+      {id:"s6_sex_4",nome:"Set conjugado: remador + twist c/ 12 kg",series:3,reps:"12+10 s",obs:"Manter carga - qualidade do twist."},
+      {id:"s6_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"25 s cada",obs:"+5 s vs sem. 5."},
+     ],nota:"Pranchas +5 s. Perdigueiro +5 s."},
+    {id:"s6_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa - Zona 2",meta:"65-70 min · retomada sem. 3",
+     run:[
+      {label:"DURACAO",val:"65-70 min"},
+      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
+      {label:"PROGRESSAO",val:"Retoma volume da sem. 3"},
+      {label:"REFERENCIA",val:"Se pace melhorou naturalmente, mantenha pela FC"},
+     ],nota:"Se o pace de zona 2 melhorou (mesma FC, ritmo mais rapido), deixe o Garmin guiar pela FC."},
+    {id:"s6_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
+     nota:"Sem. 6 reestabelece patamar da sem. 3. A sem. 7 introduz rest-pause e 6 tiros."},
+  ]},
+  7:{label:"SEM 7 · NOVO PATAMAR",days:[
+    {id:"s7_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~65 min · rest-pause",
+     exercicios:[
+      {id:"s7_seg_1",nome:"Supino reto com halter",series:3,reps:"10+3*",obs:"*Rest-pause: 15 s pausa + 3 reps extras. Ultima serie."},
+      {id:"s7_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 6. SEM rest-pause - preservar ombro."},
+      {id:"s7_seg_3",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"+2 kg vs sem. 6."},
+      {id:"s7_seg_4",nome:"Triceps testa no crossover",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie apenas."},
+      {id:"s7_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie apenas."},
+      {id:"s7_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+      {id:"s7_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+     ],nota:"REST-PAUSE: complete as reps, descanse 15 s sem largar o peso, execute 3-4 reps extras. Somente na ULTIMA serie dos exercicios marcados (*). Nao aplicar no crucifixo nem no desenvolvimento."},
+    {id:"s7_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~52 min · rest-pause",
+     exercicios:[
+      {id:"s7_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. +2 kg vs sem. 6."},
+      {id:"s7_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. +2 kg vs sem. 6."},
+      {id:"s7_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg vs sem. 6. SEM rest-pause - controle unilateral."},
+      {id:"s7_ter_4",nome:"Biceps scott maquina",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. +2 kg vs sem. 6."},
+      {id:"s7_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+     ],nota:"Rest-pause nos compostos e no scott. Remada unilateral e biceps barra sem rest-pause."},
+    {id:"s7_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~65 min · rest-pause",
+     exercicios:[
+      {id:"s7_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Amplitude total."},
+      {id:"s7_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 6. SEM rest-pause."},
+      {id:"s7_qua_3",nome:"Leg press anilhas",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. +10 kg vs sem. 6."},
+      {id:"s7_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+      {id:"s7_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+      {id:"s7_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg vs sem. 6. SEM rest-pause."},
+     ],nota:"Rest-pause no bulgaro e leg press apenas. Elevacao, sumo, flexora e extensora sem rest-pause."},
+    {id:"s7_qui",name:"Quinta-feira",tipo:"corr",titulo:"Intervalado - 6 tiros",meta:"47 min · novo maximo",
+     run:[
+      {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
+      {label:"TIROS",val:"6x 4 min · HR Zone 4 · pace 4:30-4:40/km"},
+      {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
+      {label:"VOLTA CALMA",val:"6 min zona 1 · tempo fixo"},
+     ],nota:"Primeiro treino com 6 tiros. Progressao por volume - mesmo pace da sem. 6, mais um tiro. Se tiro 6 vier acima de 4:45, avalie o pace para o proximo ciclo."},
+    {id:"s7_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"5 exercicios · ~42 min",
+     exercicios:[
+      {id:"s7_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg vs sem. 6."},
+      {id:"s7_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"45 s cada",obs:"+5 s vs sem. 6."},
+      {id:"s7_sex_3",nome:"Prancha lateral",series:3,reps:"55 s cada",obs:"+5 s vs sem. 6."},
+      {id:"s7_sex_4",nome:"Set conjugado: remador + twist c/ 14 kg",series:3,reps:"12+10 s",obs:"+2 kg no twist vs sem. 6."},
+      {id:"s7_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"30 s cada",obs:"+5 s vs sem. 6."},
+     ],nota:"Pranchas aproximando do minuto. Twist sobe para 14 kg se execucao da sem. 6 foi solida."},
+    {id:"s7_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa - Zona 2",meta:"70-75 min · novo maximo",
+     run:[
+      {label:"DURACAO",val:"70-75 min"},
+      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
+      {label:"PROGRESSAO",val:"+5 min vs sem. 6 · novo maximo do ciclo"},
+      {label:"HIDRATACAO",val:"500 ml nas 2h anteriores · agua durante se > 60 min"},
+     ],nota:"Novo maximo de volume aerobico. Principal estimulo para elevacao do HDL. Hidrate bem - Rio de Janeiro exige atencao ao calor."},
+    {id:"s7_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
+     nota:"Semana mais exigente do ciclo. HRV baixo na segunda = reduzir carga do rest-pause nos compostos."},
+  ]},
+  8:{label:"SEM 8 · DELOAD",days:[
+    {id:"s8_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~45 min · deload",
+     exercicios:[
+      {id:"s8_seg_1",nome:"Supino reto com halter",series:3,reps:"10",obs:"Carga da sem. 5. SEM rest-pause."},
+      {id:"s8_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"Carga da sem. 5. Amplitude maxima."},
+      {id:"s8_seg_3",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"Carga da sem. 5. Deload leve."},
+      {id:"s8_seg_4",nome:"Triceps testa no crossover",series:3,reps:"10",obs:"Carga da sem. 5. SEM rest-pause."},
+      {id:"s8_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"Carga da sem. 5. Sessao leve."},
+      {id:"s8_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"Carga reduzida. Preservar ombro."},
+      {id:"s8_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"Carga reduzida. Movimento fluido."},
+     ],nota:"DELOAD: cargas da sem. 5, sem rest-pause. Objetivo e recuperacao muscular e articular."},
+    {id:"s8_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"5 exercicios · ~40 min · deload",
+     exercicios:[
+      {id:"s8_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10",obs:"Carga da sem. 5. SEM rest-pause."},
+      {id:"s8_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"Carga da sem. 5."},
+      {id:"s8_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"Carga da sem. 5. Corrigir compensacoes."},
+      {id:"s8_ter_4",nome:"Biceps scott maquina",series:3,reps:"10",obs:"Carga da sem. 5. ROM completo."},
+      {id:"s8_ter_5",nome:"Biceps na barra em H",series:3,reps:"10",obs:"Carga da sem. 5."},
+     ],nota:"Use o deload para corrigir compensacoes tecnicas que apareceram com cargas mais altas."},
+    {id:"s8_qua",name:"Quarta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~48 min · deload",
+     exercicios:[
+      {id:"s8_qua_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10",obs:"Carga da sem. 5. SEM rest-pause. Profundidade."},
+      {id:"s8_qua_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"Carga da sem. 5."},
+      {id:"s8_qua_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"Carga da sem. 5. Amplitude total."},
+      {id:"s8_qua_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"Carga da sem. 5."},
+      {id:"s8_qua_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"Carga da sem. 5."},
+      {id:"s8_qua_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"Carga da sem. 5."},
+     ],nota:"Deload de inferiores critico - joelhos, quadril e coluna se recuperam antes do proximo ciclo."},
+    {id:"s8_qui",name:"Quinta-feira",tipo:"corr",titulo:"Corrida leve - Deload",meta:"30 min · zona 1-2",
+     run:[
+      {label:"DURACAO",val:"30 min continuos"},
+      {label:"FC ALVO",val:"Abaixo de 135 bpm · zona 1-2"},
+      {label:"RITMO",val:"Muito confortavel - conversa facil"},
+      {label:"OBJETIVO",val:"Recuperacao ativa, nao estimulo"},
+     ],nota:"Nenhum tiro, nenhuma zona 4. Se sentir cansaco da sem. 7, substitua por caminhada de 30-40 min."},
+    {id:"s8_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade",meta:"4 exercicios · ~30 min · deload",
+     exercicios:[
+      {id:"s8_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"Carga da sem. 5. Foco em estabilizacao."},
+      {id:"s8_sex_2",nome:"Prancha unipodal no Bosu",series:3,reps:"20 s cada",obs:"Volta ao tempo inicial."},
+      {id:"s8_sex_3",nome:"Prancha lateral",series:3,reps:"30 s cada",obs:"Volta ao tempo inicial."},
+      {id:"s8_sex_4",nome:"Perdigueiro com 3 kg",series:3,reps:"15 s cada",obs:"Sem set conjugado esta semana."},
+     ],nota:"4 exercicios, sem set conjugado. Reserve 15 min para mobilidade completa - quadril, toracao toracica, tornozelo."},
+    {id:"s8_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa reduzida - Deload",meta:"45-50 min · zona 2 baixa",
+     run:[
+      {label:"DURACAO",val:"45-50 min"},
+      {label:"FC ALVO",val:"125-138 bpm · zona 2 baixa"},
+      {label:"REDUCAO",val:"-25 min vs semana 7"},
+      {label:"TERRENO",val:"Plano - sem ondulacoes"},
+     ],nota:"Deload aerobico: zona 2 baixa (125-138 bpm). O volume acumulado das 3 semanas anteriores continua gerando adaptacao."},
+    {id:"s8_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao completa",
+     nota:"Fim do Ciclo 2. Na sem. 9 a progressao reinicia acima dos maximos da sem. 7. Avalie fazer exame de sangue para monitorar HDL."},
+  ]}
 };
 
-let currentWeek = 2;
-let state = {};
+let currentWeek=5;
+let state={};
 
-function loadState(){try{const r=localStorage.getItem('treino_v4');state=r?JSON.parse(r):{};}catch(e){state={};}}
-function saveState(){try{localStorage.setItem('treino_v4',JSON.stringify(state));}catch(e){}}
-function getExState(id){if(!state[id])state[id]={sets:{}};return state[id];}
-function getSetState(exId,si){const es=getExState(exId);if(!es.sets[si])es.sets[si]={kg:'',done:false};return es.sets[si];}
+function loadState(){try{const r=localStorage.getItem('treino_ciclo2');state=r?JSON.parse(r):{};}catch(e){state={};}}
+function saveState(){try{localStorage.setItem('treino_ciclo2',JSON.stringify(state));}catch(e){}}
+function getSetState(exId,si){if(!state[exId])state[exId]={sets:{}};if(!state[exId].sets[si])state[exId].sets[si]={kg:'',done:false};return state[exId].sets[si];}
 
 function render(){renderTabs();renderDays();updateProgress();}
 
@@ -296,7 +323,6 @@ function renderTabs(){
   document.getElementById('weekTabs').innerHTML=Object.keys(WEEKS).map(wk=>`
     <button class="week-tab ${parseInt(wk)===currentWeek?'active':''}" onclick="switchWeek(${wk})">${WEEKS[wk].label}</button>`).join('');
 }
-
 function switchWeek(wk){currentWeek=parseInt(wk);renderTabs();renderDays();updateProgress();}
 
 function renderDays(){
@@ -308,138 +334,40 @@ function renderDay(day,di){
   const bl=day.tipo==='musc'?'MUSCULACAO':day.tipo==='corr'?'CORRIDA':'DESCANSO';
   const {total,done}=getDayProgress(day);
   const pct=total>0?Math.round((done/total)*100):0;
-  const C=2*Math.PI*12;
-  const offset=C-(pct/100)*C;
+  const C=2*Math.PI*12,offset=C-(pct/100)*C;
   const isComplete=total>0&&done===total;
-  const ring=total>0?`<div class="day-progress-ring">
-    <svg width="32" height="32" viewBox="0 0 32 32">
-      <circle class="ring-bg" cx="16" cy="16" r="12"/>
-      <circle class="ring-fill" cx="16" cy="16" r="12" stroke-dasharray="${C}" stroke-dashoffset="${offset}" stroke="${isComplete?'var(--success)':'var(--accent)'}"/>
-    </svg><div class="ring-text">${pct}%</div></div>`:`<div style="width:32px"></div>`;
-
+  const ring=total>0?`<div class="day-progress-ring"><svg width="32" height="32" viewBox="0 0 32 32"><circle class="ring-bg" cx="16" cy="16" r="12"/><circle class="ring-fill" cx="16" cy="16" r="12" stroke-dasharray="${C}" stroke-dashoffset="${offset}" stroke="${isComplete?'var(--success)':'var(--accent)'}"/></svg><div class="ring-text">${pct}%</div></div>`:`<div style="width:32px"></div>`;
   let body='';
-  if(day.tipo==='musc'&&day.exercicios)
-    body=`<div class="ex-list">${day.exercicios.map((ex,ei)=>renderEx(ex,ei)).join('')}</div>`;
-  else if(day.tipo==='corr'&&day.run)
-    body=`<div class="run-block">${day.run.map(r=>`<div class="run-row"><span class="run-label">${r.label}</span><span class="run-val">${r.val}</span></div>`).join('')}</div>`;
-  else if(day.tipo==='desc')
-    body=`<div class="rest-block">✦ Descanso — sem treino estruturado</div>`;
+  if(day.tipo==='musc'&&day.exercicios) body=`<div class="ex-list">${day.exercicios.map((ex,ei)=>renderEx(ex)).join('')}</div>`;
+  else if(day.tipo==='corr'&&day.run) body=`<div class="run-block">${day.run.map(r=>`<div class="run-row"><span class="run-label">${r.label}</span><span class="run-val">${r.val}</span></div>`).join('')}</div>`;
+  else body=`<div class="rest-block">✦ Descanso — sem treino estruturado</div>`;
   if(day.nota) body+=`<div class="nota-block"><div class="nota-label">NOTA</div>${day.nota}</div>`;
-
-  return `<div class="day-card ${isComplete?'completed':''}" id="card_${day.id}">
-    <div class="day-header" onclick="toggleDay('${day.id}')">
-      <span class="day-badge ${bc}">${bl}</span>
-      <div class="day-info"><div class="day-name">${day.name} — ${day.titulo}</div><div class="day-meta">${day.meta}</div></div>
-      ${ring}
-      <span class="chevron" id="chev_${day.id}">▾</span>
-    </div>
-    <div class="day-body" id="body_${day.id}">${body}</div>
-  </div>`;
+  return `<div class="day-card ${isComplete?'completed':''}" id="card_${day.id}"><div class="day-header" onclick="toggleDay('${day.id}')"><span class="day-badge ${bc}">${bl}</span><div class="day-info"><div class="day-name">${day.name} — ${day.titulo}</div><div class="day-meta">${day.meta}</div></div>${ring}<span class="chevron" id="chev_${day.id}">▾</span></div><div class="day-body" id="body_${day.id}">${body}</div></div>`;
 }
 
-function renderEx(ex,ei){
+function renderEx(ex){
   const allDone=Array.from({length:ex.series},(_,si)=>getSetState(ex.id,si).done).every(Boolean);
   let sets=`<div class="sets-header"><span style="text-align:center">SET</span><span style="text-align:center">KG</span><span style="text-align:center">REPS</span><span></span></div>`;
   for(let si=0;si<ex.series;si++){
     const ss=getSetState(ex.id,si);
-    sets+=`<div class="set-row" id="setrow_${ex.id}_${si}">
-      <span class="set-num">${si+1}</span>
-      <input class="set-input ${ss.kg?'filled':''}" type="number" inputmode="decimal" placeholder="—" value="${ss.kg}"
-        onchange="setKg('${ex.id}',${si},this.value)" onfocus="this.select()"/>
-      <div style="font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;padding:7px 4px">${ex.reps}</div>
-      <button class="set-done-btn ${ss.done?'done':''}" onclick="toggleSetDone('${ex.id}',${si})">
-        <svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg>
-      </button></div>`;
+    sets+=`<div class="set-row" id="setrow_${ex.id}_${si}"><span class="set-num">${si+1}</span><input class="set-input ${ss.kg?'filled':''}" type="number" inputmode="decimal" placeholder="—" value="${ss.kg}" onchange="setKg('${ex.id}',${si},this.value)" onfocus="this.select()"/><div style="font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;padding:7px 4px">${ex.reps}</div><button class="set-done-btn ${ss.done?'done':''}" onclick="toggleSetDone('${ex.id}',${si})"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></button></div>`;
   }
   if(ex.obs) sets+=`<div class="ex-obs">${ex.obs}</div>`;
-  return `<div class="ex-item ${allDone?'ex-done':''}" id="exitem_${ex.id}">
-    <div class="ex-top" onclick="toggleEx('${ex.id}')">
-      <div class="ex-check ${allDone?'checked':''}" id="excheck_${ex.id}" onclick="event.stopPropagation();toggleExDone('${ex.id}',${ex.series})">
-        <svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg>
-      </div>
-      <div class="ex-info"><div class="ex-name">${ex.nome}</div><div class="ex-specs">${ex.series}x${ex.reps}</div></div>
-      <span class="ex-expand" id="exexp_${ex.id}">▾</span>
-    </div>
-    <div class="ex-sets" id="exsets_${ex.id}">${sets}</div>
-  </div>`;
+  return `<div class="ex-item ${allDone?'ex-done':''}" id="exitem_${ex.id}"><div class="ex-top" onclick="toggleEx('${ex.id}')"><div class="ex-check ${allDone?'checked':''}" id="excheck_${ex.id}" onclick="event.stopPropagation();toggleExDone('${ex.id}',${ex.series})"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div><div class="ex-info"><div class="ex-name">${ex.nome}</div><div class="ex-specs">${ex.series}x${ex.reps}</div></div><span class="ex-expand" id="exexp_${ex.id}">▾</span></div><div class="ex-sets" id="exsets_${ex.id}">${sets}</div></div>`;
 }
 
-function toggleDay(id){
-  const b=document.getElementById('body_'+id),c=document.getElementById('chev_'+id);
-  const o=b.classList.toggle('open');if(c)c.classList.toggle('open',o);
-}
-function toggleEx(id){
-  const s=document.getElementById('exsets_'+id),e=document.getElementById('exexp_'+id);
-  const o=s.classList.toggle('open');if(e)e.classList.toggle('open',o);
-}
-function setKg(exId,si,val){
-  getSetState(exId,si).kg=val;
-  const inp=document.querySelector(`#setrow_${exId}_${si} .set-input`);
-  if(inp)inp.classList.toggle('filled',!!val);
-  saveState();
-}
-function toggleSetDone(exId,si){
-  const ss=getSetState(exId,si);ss.done=!ss.done;
-  const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);
-  if(btn)btn.classList.toggle('done',ss.done);
-  refreshExDone(exId);updateProgress();saveState();
-}
-function toggleExDone(exId,n){
-  const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);
-  const allDone=Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));
-  const nd=!allDone;
-  for(let si=0;si<n;si++){
-    getSetState(exId,si).done=nd;
-    const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);
-    if(btn)btn.classList.toggle('done',nd);
-  }
-  refreshExDone(exId);updateProgress();saveState();
-}
-function refreshExDone(exId){
-  const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);
-  const allDone=rows.length>0&&Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));
-  const ck=document.getElementById('excheck_'+exId),it=document.getElementById('exitem_'+exId);
-  if(ck)ck.classList.toggle('checked',allDone);if(it)it.classList.toggle('ex-done',allDone);
-  const wk=WEEKS[currentWeek];
-  for(const day of wk.days){if(!day.exercicios)continue;if(day.exercicios.some(ex=>ex.id===exId)){updateDayRing(day);break;}}
-}
-function updateDayRing(day){
-  const {total,done}=getDayProgress(day);
-  const pct=total>0?Math.round((done/total)*100):0;
-  const C=2*Math.PI*12,offset=C-(pct/100)*C;
-  const isComplete=total>0&&done===total;
-  const ring=document.querySelector(`#card_${day.id} .ring-fill`);
-  const text=document.querySelector(`#card_${day.id} .ring-text`);
-  const card=document.getElementById('card_'+day.id);
-  if(ring){ring.style.strokeDashoffset=offset;ring.style.stroke=isComplete?'var(--success)':'var(--accent)';}
-  if(text)text.textContent=pct+'%';
-  if(card)card.classList.toggle('completed',isComplete);
-}
-function getDayProgress(day){
-  if(!day.exercicios)return{total:0,done:0};
-  let t=0,d=0;
-  for(const ex of day.exercicios)for(let si=0;si<ex.series;si++){t++;if(getSetState(ex.id,si).done)d++;}
-  return{total:t,done:d};
-}
-function updateProgress(){
-  const wk=WEEKS[currentWeek];let t=0,d=0;
-  for(const day of wk.days){const p=getDayProgress(day);t+=p.total;d+=p.done;}
-  const pct=t>0?Math.round((d/t)*100):0;
-  document.getElementById('progressInfo').textContent=`${d} / ${t} sets`;
-  document.getElementById('progressBar').style.width=pct+'%';
-}
+function toggleDay(id){const b=document.getElementById('body_'+id),c=document.getElementById('chev_'+id);const o=b.classList.toggle('open');if(c)c.classList.toggle('open',o);}
+function toggleEx(id){const s=document.getElementById('exsets_'+id),e=document.getElementById('exexp_'+id);const o=s.classList.toggle('open');if(e)e.classList.toggle('open',o);}
+function setKg(exId,si,val){getSetState(exId,si).kg=val;const inp=document.querySelector(`#setrow_${exId}_${si} .set-input`);if(inp)inp.classList.toggle('filled',!!val);saveState();}
+function toggleSetDone(exId,si){const ss=getSetState(exId,si);ss.done=!ss.done;const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);if(btn)btn.classList.toggle('done',ss.done);refreshExDone(exId);updateProgress();saveState();}
+function toggleExDone(exId,n){const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);const allDone=Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));const nd=!allDone;for(let si=0;si<n;si++){getSetState(exId,si).done=nd;const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);if(btn)btn.classList.toggle('done',nd);}refreshExDone(exId);updateProgress();saveState();}
+function refreshExDone(exId){const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);const allDone=rows.length>0&&Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));const ck=document.getElementById('excheck_'+exId),it=document.getElementById('exitem_'+exId);if(ck)ck.classList.toggle('checked',allDone);if(it)it.classList.toggle('ex-done',allDone);const wk=WEEKS[currentWeek];for(const day of wk.days){if(!day.exercicios)continue;if(day.exercicios.some(ex=>ex.id===exId)){updateDayRing(day);break;}}}
+function updateDayRing(day){const{total,done}=getDayProgress(day);const pct=total>0?Math.round((done/total)*100):0;const C=2*Math.PI*12,offset=C-(pct/100)*C;const isComplete=total>0&&done===total;const ring=document.querySelector(`#card_${day.id} .ring-fill`);const text=document.querySelector(`#card_${day.id} .ring-text`);const card=document.getElementById('card_'+day.id);if(ring){ring.style.strokeDashoffset=offset;ring.style.stroke=isComplete?'var(--success)':'var(--accent)';}if(text)text.textContent=pct+'%';if(card)card.classList.toggle('completed',isComplete);}
+function getDayProgress(day){if(!day.exercicios)return{total:0,done:0};let t=0,d=0;for(const ex of day.exercicios)for(let si=0;si<ex.series;si++){t++;if(getSetState(ex.id,si).done)d++;}return{total:t,done:d};}
+function updateProgress(){const wk=WEEKS[currentWeek];let t=0,d=0;for(const day of wk.days){const p=getDayProgress(day);t+=p.total;d+=p.done;}const pct=t>0?Math.round((d/t)*100):0;document.getElementById('progressInfo').textContent=`${d} / ${t} sets`;document.getElementById('progressBar').style.width=pct+'%';}
 function saveAll(){saveState();showToast('salvo ✓');}
-function confirmReset(){
-  if(confirm('Resetar checagens? Os pesos salvos serao mantidos.')){
-    const wk=WEEKS[currentWeek];
-    for(const day of wk.days){if(!day.exercicios)continue;for(const ex of day.exercicios)for(let si=0;si<ex.series;si++)getSetState(ex.id,si).done=false;}
-    saveState();renderDays();updateProgress();showToast('resetado ✓');
-  }
-}
-function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-}
+function confirmReset(){if(confirm('Resetar checagens desta semana? Os pesos salvos serao mantidos.')){const wk=WEEKS[currentWeek];for(const day of wk.days){if(!day.exercicios)continue;for(const ex of day.exercicios)for(let si=0;si<ex.series;si++)getSetState(ex.id,si).done=false;}saveState();renderDays();updateProgress();showToast('semana resetada ✓');}}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
 
 loadState();render();
 </script>
