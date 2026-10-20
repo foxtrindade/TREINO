@@ -1,412 +1,291 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Rotina de Treino</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ciclo 4">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f1214">
+<title>Ciclo 4 Treino</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root{--bg:#0f0f0f;--surface:#1a1a1a;--surface2:#242424;--border:#2e2e2e;--accent:#c8f060;--accent2:#60c8f0;--accent3:#f0a060;--accent4:#c060f0;--text:#f0efe8;--muted:#888;--success:#60f0a0;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;--r:10px;--r-sm:6px;}
-  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-  body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;font-size:15px;}
-  .header{position:sticky;top:0;z-index:100;background:rgba(15,15,15,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
-  .header-title{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.06em;}
-  .header-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-  .btn-reset{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;}
-  .week-tabs{display:flex;gap:8px;padding:14px 16px 0;overflow-x:auto;scrollbar-width:none;}
-  .week-tabs::-webkit-scrollbar{display:none;}
-  .week-tab{flex-shrink:0;font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:7px 14px;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .15s;}
-  .week-tab.active{background:var(--accent);color:#0f0f0f;border-color:var(--accent);font-weight:500;}
-  .week-tab.travel{border-color:rgba(192,96,240,.4);color:var(--accent4);}
-  .week-tab.travel.active{background:var(--accent4);color:#0f0f0f;border-color:var(--accent4);}
-  .week-tab.deload{border-color:rgba(240,160,96,.4);color:var(--accent3);}
-  .week-tab.deload.active{background:var(--accent3);color:#0f0f0f;border-color:var(--accent3);}
-  .days{padding:12px 16px;display:flex;flex-direction:column;gap:10px;}
-  .day-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s;}
-  .day-card.completed{border-color:var(--accent);}
-  .day-header{display:flex;align-items:center;gap:10px;padding:13px 14px;cursor:pointer;user-select:none;-webkit-user-select:none;}
-  .day-badge{font-family:var(--mono);font-size:9px;letter-spacing:.08em;padding:3px 8px;border-radius:99px;flex-shrink:0;font-weight:500;}
-  .badge-musc{background:rgba(200,240,96,.15);color:var(--accent);}
-  .badge-corr{background:rgba(96,200,240,.15);color:var(--accent2);}
-  .badge-viag{background:rgba(192,96,240,.15);color:var(--accent4);}
-  .badge-desc{background:rgba(136,136,136,.15);color:var(--muted);}
-  .day-info{flex:1;min-width:0;}
-  .day-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .day-meta{font-size:11px;color:var(--muted);margin-top:1px;}
-  .day-progress-ring{flex-shrink:0;position:relative;width:32px;height:32px;}
-  .day-progress-ring svg{transform:rotate(-90deg);}
-  .ring-bg{fill:none;stroke:var(--border);stroke-width:2.5;}
-  .ring-fill{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
-  .ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--muted);}
-  .chevron{color:var(--muted);font-size:16px;flex-shrink:0;transition:transform .2s;}
-  .chevron.open{transform:rotate(180deg);}
-  .day-body{display:none;padding:0 14px 14px;}
-  .day-body.open{display:block;}
-  .ex-list{display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
-  .ex-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;}
-  .ex-item.ex-done{border-color:rgba(96,240,160,.4);}
-  .ex-top{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;}
-  .ex-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;cursor:pointer;}
-  .ex-check.checked{background:var(--success);border-color:var(--success);}
-  .ex-check svg{width:11px;height:11px;stroke:#0f0f0f;stroke-width:2.5;fill:none;opacity:0;transition:opacity .15s;}
-  .ex-check.checked svg{opacity:1;}
-  .ex-info{flex:1;min-width:0;}
-  .ex-name{font-size:13px;font-weight:500;line-height:1.3;}
-  .ex-specs{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:2px;letter-spacing:.03em;}
-  .ex-expand{color:var(--muted);font-size:14px;flex-shrink:0;transition:transform .2s;}
-  .ex-expand.open{transform:rotate(180deg);}
-  .ex-sets{display:none;padding:0 12px 12px;border-top:1px solid var(--border);}
-  .ex-sets.open{display:block;}
-  .sets-header{display:grid;grid-template-columns:36px 1fr 1fr auto;gap:8px;padding:8px 0 6px;font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.06em;}
-  .set-row{display:grid;grid-template-columns:36px 1fr 1fr auto;gap:8px;align-items:center;padding:5px 0;border-top:1px solid rgba(46,46,46,.6);}
-  .set-num{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;}
-  .set-input{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-sm);padding:7px 8px;font-family:var(--mono);font-size:13px;color:var(--text);width:100%;text-align:center;outline:none;-webkit-appearance:none;appearance:none;}
-  .set-input:focus{border-color:var(--accent);}
-  .set-input.filled{border-color:rgba(200,240,96,.3);color:var(--accent);}
-  .set-done-btn{width:28px;height:28px;border-radius:50%;flex-shrink:0;border:1.5px solid var(--border);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;}
-  .set-done-btn.done{background:var(--success);border-color:var(--success);}
-  .set-done-btn svg{width:12px;height:12px;stroke:var(--bg);stroke-width:2.5;fill:none;opacity:0;}
-  .set-done-btn.done svg{opacity:1;}
-  .ex-obs{font-size:11px;color:var(--muted);padding:8px 0 0;line-height:1.5;border-top:1px solid var(--border);margin-top:6px;}
-  .run-block{background:var(--surface2);border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--border);}
-  .run-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 12px;border-bottom:1px solid var(--border);}
-  .run-row:last-child{border-bottom:none;}
-  .run-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;}
-  .run-val{font-size:13px;font-weight:500;color:var(--accent2);max-width:65%;text-align:right;}
-  .run-val.travel{color:var(--accent4);}
-  .rest-block{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
-  .nota-block{background:rgba(240,160,96,.08);border:1px solid rgba(240,160,96,.2);border-radius:var(--r-sm);padding:10px 12px;margin-top:10px;font-size:11px;color:var(--accent3);line-height:1.6;}
-  .nota-label{font-family:var(--mono);font-size:9px;letter-spacing:.06em;margin-bottom:4px;opacity:.7;}
-  .nota-block.travel{background:rgba(192,96,240,.08);border-color:rgba(192,96,240,.2);color:var(--accent4);}
-  .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,15,15,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--border);padding:10px 16px 20px;display:flex;align-items:center;justify-content:space-between;}
-  .progress-info{font-family:var(--mono);font-size:11px;color:var(--muted);}
-  .progress-bar-wrap{flex:1;margin:0 12px;height:4px;background:var(--border);border-radius:99px;overflow:hidden;}
-  .progress-bar-fill{height:100%;background:var(--accent);border-radius:99px;transition:width .4s ease;}
-  .btn-save{font-family:var(--mono);font-size:12px;letter-spacing:.04em;background:var(--accent);color:#0f0f0f;border:none;border-radius:var(--r-sm);padding:9px 16px;cursor:pointer;font-weight:500;}
-  .btn-save:active{opacity:.8;transform:scale(.97);}
-  .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:10px 18px;font-family:var(--mono);font-size:12px;color:var(--accent);opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;z-index:200;}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+:root{
+  --bg:#0f1214;--surface:#171b1e;--surface-2:#1f2428;--line:#2b3238;
+  --fg:#e7ebee;--muted:#93a0a9;--accent:#f2b84b;
+  --pull:#5aa9e6;--push:#ef8a5a;--lower:#b48cf0;--run:#5fcf8f;--core:#4cc3c3;--rest:#6b7780;
+  --z2:#5fcf8f;--z4:#ef8a5a;--done:#5fcf8f;
+  --f-display:"Oswald","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"Inter","Segoe UI",Roboto,sans-serif;
+  --f-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.45}
+body{padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);padding-top:calc(10px + env(safe-area-inset-top,0px));margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-bottom:8px;border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px}
+.brand h1{font-family:var(--f-display);font-weight:600;font-size:20px;letter-spacing:.05em;text-transform:uppercase;margin:0}
+.brand span{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.row::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;font-family:var(--f-display);font-size:14px;letter-spacing:.04em;text-transform:uppercase;background:var(--surface);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer;line-height:1.1;text-align:center}
+.chip small{display:block;font-family:var(--f-mono);font-size:9.5px;letter-spacing:0;text-transform:none;margin-top:2px}
+.chip[aria-pressed="true"]{background:var(--accent);color:#16130b;border-color:var(--accent)}
+.days .chip[aria-pressed="true"]{background:var(--c);border-color:var(--c);color:#0f1214}
+.days{margin-top:6px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+main{display:flex;flex-direction:column;gap:12px;padding-top:14px}
+.dayhead{border-left:4px solid var(--c);padding-left:10px;display:flex;flex-direction:column;gap:3px}
+.dayhead h2{font-family:var(--f-display);font-weight:500;font-size:22px;text-transform:uppercase;letter-spacing:.04em;margin:0}
+.dayhead p{margin:0;color:var(--muted);font-size:13.5px}
+.meta{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-family:var(--f-mono);font-size:11px;border:1px solid var(--line);border-radius:999px;padding:2px 8px;color:var(--muted)}
+.tag.hi{color:var(--accent);border-color:var(--accent)}
+.progress{height:4px;background:var(--surface-2);border-radius:2px;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--done);width:0;transition:width .2s}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ex.complete{border-color:color-mix(in srgb,var(--done) 55%,var(--line))}
+.exhead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.exhead h3{margin:0;font-size:15.5px;font-weight:650;line-height:1.3}
+.exhead h3 .n{font-family:var(--f-mono);color:var(--muted);font-weight:400;font-size:12px;margin-right:6px}
+.presc{font-family:var(--f-mono);font-size:13px;white-space:nowrap;color:var(--accent)}
+.exnote{font-size:13px;color:var(--muted);margin:0}
+.sets{display:grid;grid-template-columns:30px auto 1fr 64px 40px;gap:6px 8px;align-items:center}
+.sets .h{font-family:var(--f-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sets .meta-r{font-family:var(--f-mono);font-size:15px;font-weight:600;color:var(--accent);white-space:nowrap;padding-right:4px}
+.sets .s{font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.sets input{width:100%;min-width:0;background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:8px 9px;font-family:var(--f-mono);font-size:16px}
+.sets input::placeholder{color:#59646c}
+.ok{width:40px;height:36px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--muted);font-size:17px;cursor:pointer}
+.ok[aria-pressed="true"]{background:var(--done);border-color:var(--done);color:#0f1214}
+.rest{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.timer{font-family:var(--f-mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:6px 10px;cursor:pointer}
+.timer.on{background:var(--accent);color:#16130b;border-color:var(--accent)}
+textarea{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:8px;font-family:var(--f-body);font-size:15px;resize:vertical;min-height:38px}
+.run{display:flex;flex-direction:column;gap:6px}
+.seg{font-family:var(--f-mono);font-size:13px;padding:8px 10px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line)}
+.seg.z2{border-color:var(--z2);color:var(--z2)}.seg.z4{border-color:var(--z4);color:var(--z4)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.fields label{display:flex;flex-direction:column;gap:3px;font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fields input{background:var(--bg);border:1px solid var(--line);color:var(--fg);border-radius:6px;padding:8px 9px;font-family:var(--f-mono);font-size:16px;width:100%;min-width:0}
+details.info{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+details.info summary{cursor:pointer;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:14px}
+details.info ul{margin:8px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:13.5px;color:var(--muted)}
+details.info b{color:var(--fg)}
+.foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.foot button{font-family:var(--f-mono);font-size:12px;background:var(--surface);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:8px 10px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--accent);color:#16130b;font-family:var(--f-mono);font-size:13px;padding:9px 14px;border-radius:8px;z-index:9}
+#bk{width:100%;min-height:90px;font-family:var(--f-mono);font-size:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="header">
-  <div><div class="header-title">ROTINA DE TREINO</div><div class="header-sub">70 kg · 1,76 m · 38 anos · Ciclo 3</div></div>
-  <button class="btn-reset" onclick="confirmReset()">↺ reset semana</button>
+<header class="top"><div class="wrap">
+  <div class="brand"><h1>Ciclo 4</h1><span id="sub"></span></div>
+  <div class="row weeks" id="weeks"></div>
+  <div class="row days" id="days"></div>
+</div></header>
+
+<div class="wrap">
+<main id="main"></main>
+
+<details class="info" style="margin-top:14px">
+  <summary>Regras do ciclo</summary>
+  <ul>
+    <li><b>Meta de repetições:</b> já vem definida para cada semana (S1 no início da faixa, subindo até o topo na S5). Use a carga que permite cumprir a meta com o RIR da semana. A coluna "Fez" é só para registrar se ficou diferente.</li>
+    <li><b>Carga:</b> cumpriu a meta em todas as séries com técnica limpa e sobrou mais que o RIR, suba 2–2,5 kg nos compostos e 1–2 kg nos isolados na sessão seguinte. Não cumpriu, mantenha.</li>
+    <li><b>Supino:</b> metas de 5 a 8 repetições ao longo do ciclo. Ao fazer 4 × 8 em qualquer semana, sobe 2,5 kg. S1–S2: pausa de 1 s no peito na 1ª repetição de cada série.</li>
+    <li><b>RIR</b> = repetições em reserva. RIR 2 é parar quando ainda sobrariam 2.</li>
+    <li><b>Rest-pause</b> (S3–S5): só na última série dos isolados marcados. Ao falhar, 15 s de pausa e mais 2–4 repetições.</li>
+    <li><b>Corrida leve:</b> alerta de FC em 137 bpm. Passou, caminhe até 125 e volte. Não olhe o pace.</li>
+    <li><b>Tiros:</b> alvo Z4 (155–176), recuperação por tempo fixo trotando.</li>
+    <li><b>Dia ruim:</b> HRV abaixo da faixa ou Body Battery &lt; 30 ao acordar → tiro vira Z2 de 30 min e tire uma série por exercício.</li>
+    <li><b>Deload (S6):</b> carga 10% abaixo da S5, séries reduzidas, RIR 3.</li>
+  </ul>
+</details>
+
+<div class="foot">
+  <button id="bExp" type="button">Copiar backup</button>
+  <button id="bImp" type="button">Restaurar backup</button>
 </div>
-<div class="week-tabs" id="weekTabs"></div>
-<div class="days" id="daysContainer"></div>
-<div class="bottom-bar">
-  <div class="progress-info" id="progressInfo">0 / 0</div>
-  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
-  <button class="btn-save" onclick="saveAll()">salvar ↓</button>
+<div id="bkWrap" hidden style="margin-top:8px"><textarea id="bk" placeholder="Cole aqui o backup e toque em Restaurar backup de novo"></textarea></div>
 </div>
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" hidden></div>
 
 <script>
-const WEEKS={
-  1:{label:"SEM 1 · FORÇA",type:"normal",days:[
-    {id:"w1_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~65 min · rest-pause",
-     exercicios:[
-      {id:"w1_seg_1",nome:"Supino reto com halter",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Carga da sem. 7 anterior."},
-      {id:"w1_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"Carga da sem. 7. SEM rest-pause."},
-      {id:"w1_seg_3",nome:"Triceps frances (halter ou barra EZ acima da cabeca)",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Cabeca longa em posicao maximamente alongada."},
-      {id:"w1_seg_4",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"Cabecas lateral e medial. Carga da sem. 7. SEM rest-pause."},
-      {id:"w1_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie."},
-      {id:"w1_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"SEM rest-pause. Monitorar deltoides anterior."},
-      {id:"w1_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"SEM rest-pause. Finalizador leve."},
-     ],nota:"Triceps: frances (cabeca longa) → pushdown (lateral + medial) — cobertura completa das 3 cabecas. Rest-pause: complete as reps, 15 s de pausa sem largar o peso, +3-4 reps extras. Somente na ULTIMA serie dos marcados (*). Pushdown SEM rest-pause — finalizador."},
-    {id:"w1_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"6 exercicios · ~58 min · rest-pause",
-     exercicios:[
-      {id:"w1_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie."},
-      {id:"w1_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie."},
-      {id:"w1_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"SEM rest-pause. Controle unilateral."},
-      {id:"w1_ter_4",nome:"Rosca direta com barra ou halteres",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Base — cobre as duas cabecas de forma equilibrada."},
-      {id:"w1_ter_5",nome:"Biceps scott maquina",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Isolamento cabeca curta + braquial."},
-      {id:"w1_ter_6",nome:"Rosca martelo com halteres",series:3,reps:"12",obs:"SEM rest-pause. Finalizador — braquiorradial + braquial."},
-     ],nota:"3 exercicios de biceps para cobertura completa: rosca direta (base bilateral), scott (isolamento cabeca curta), martelo (braquiorradial). Rest-pause na rosca direta e no scott. Martelo sem rest-pause — finalizador."},
-    {id:"w1_qua",name:"Quarta-feira",tipo:"corr",titulo:"Intervalado — Retomada",meta:"43 min · reintroducao estruturada",
-     run:[
-      {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
-      {label:"TIROS",val:"4x 4 min · HR Zone 4 · pace 4:35-4:45/km"},
-      {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
-      {label:"VOLTA CALMA",val:"6 min zona 1 · tempo fixo"},
-     ],nota:"Reintroducao do intervalado estruturado — recua para 4 tiros e pace 4:35-4:45 para reestabelecer o padrao apos periodo sem treino especifico. Os 6km atuais em zona 3-4 mostram boa base, mas o intervalado estruturado e mais eficiente para VO2max."},
-    {id:"w1_qui",name:"Quinta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~65 min · rest-pause",
-     exercicios:[
-      {id:"w1_qui_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie. Amplitude total."},
-      {id:"w1_qui_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"SEM rest-pause. Pausa 2 s no topo."},
-      {id:"w1_qui_3",nome:"Leg press anilhas",series:3,reps:"10+3*",obs:"*Rest-pause na ultima serie."},
-      {id:"w1_qui_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"SEM rest-pause."},
-      {id:"w1_qui_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"SEM rest-pause."},
-      {id:"w1_qui_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"SEM rest-pause."},
-     ],nota:"Rest-pause no bulgaro e leg press. Demais exercicios sem rest-pause."},
-    {id:"w1_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade + Panturrilha",meta:"6 exercicios · ~50 min",
-     exercicios:[
-      {id:"w1_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"Carga da sem. 7. Sem rotacao de tronco."},
-      {id:"w1_sex_2",nome:"Elevacao de pernas suspenso",series:3,reps:"12-15",obs:"Joelhos flexionados se necessario. Subir controlado, descer sem cair."},
-      {id:"w1_sex_3",nome:"Prancha lateral",series:3,reps:"55 s cada",obs:"Retoma tempo da sem. 7."},
-      {id:"w1_sex_4",nome:"Set conjugado: remador + twist c/ 14 kg",series:3,reps:"12+10 s",obs:"Carga da sem. 7."},
-      {id:"w1_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"30 s cada",obs:"Coluna neutra durante todo o movimento."},
-      {id:"w1_sex_6",nome:"Panturrilha em pe (maquina ou halteres)",series:3,reps:"15-20",obs:"Pausa 2 s no topo. Amplitude completa — calcanhar desce abaixo da plataforma."},
-     ],nota:"Elevacao de pernas suspenso substitui prancha unipodal — adiciona flexao dinamica e recrutamento do iliopsoas, direto relevante para corrida. Panturrilha no final — gastrocnemio e soleo. Reserve 10 min para mobilidade de quadril e tornozelo."},
-    {id:"w1_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa — Zona 2",meta:"65-70 min · reequilibrio aerobico",
-     run:[
-      {label:"DURACAO",val:"65-70 min"},
-      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-      {label:"RITMO",val:"Conversa possivel — sem forcas o pace"},
-      {label:"OBJETIVO",val:"Reequilibrar base aerobica e estimular HDL"},
-     ],nota:"IMPORTANTE: os 10km atuais de domingo em zona 3-4 nao estimulam o HDL — o estimulo exige zona 2 sustentada por 45+ min. Esta sessao substitui o domingo e passa para sabado para encadear com o descanso de domingo."},
-    {id:"w1_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
-     nota:"Verifique HRV e Body Battery no Garmin. Valores baixos na segunda indicam necessidade de ajuste no volume da semana."},
-  ]},
-  2:{label:"SEM 2 · CARGA",type:"normal",days:[
-    {id:"w2_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~65 min · progressao",
-     exercicios:[
-      {id:"w2_seg_1",nome:"Supino reto com halter",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause na ultima serie."},
-      {id:"w2_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"+2 kg vs sem. 1. SEM rest-pause."},
-      {id:"w2_seg_3",nome:"Triceps frances (halter ou barra EZ acima da cabeca)",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause na ultima serie."},
-      {id:"w2_seg_4",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"+2 kg vs sem. 1. SEM rest-pause."},
-      {id:"w2_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause ultima serie."},
-      {id:"w2_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"+2 kg vs sem. 1. SEM rest-pause."},
-      {id:"w2_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"+2 kg vs sem. 1."},
-     ],nota:"Progressao de +2 kg em todos os compostos onde a sem. 1 foi solida. Nunca progride carga e rest-pause ao mesmo tempo."},
-    {id:"w2_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"6 exercicios · ~60 min · progressao",
-     exercicios:[
-      {id:"w2_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause ultima serie."},
-      {id:"w2_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1."},
-      {id:"w2_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"+2 kg vs sem. 1."},
-      {id:"w2_ter_4",nome:"Rosca direta com barra ou halteres",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause na ultima serie."},
-      {id:"w2_ter_5",nome:"Biceps scott maquina",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause na ultima serie."},
-      {id:"w2_ter_6",nome:"Rosca martelo com halteres",series:3,reps:"12",obs:"+2 kg vs sem. 1. SEM rest-pause."},
-     ],nota:"Progressao de +2 kg em todos. Rest-pause na rosca direta e no scott. Martelo sem rest-pause — finalizador de braquiorradial."},
-    {id:"w2_qua",name:"Quarta-feira",tipo:"corr",titulo:"Intervalado — Progressao",meta:"47 min · 5 tiros",
-     run:[
-      {label:"AQUECIMENTO",val:"10 min zona 1-2 · pace ~8:00/km"},
-      {label:"TIROS",val:"5x 4 min · HR Zone 4 · pace 4:30-4:40/km"},
-      {label:"RECUPERACAO",val:"1:30 min caminhada ativa · tempo fixo"},
-      {label:"VOLTA CALMA",val:"6 min zona 1 · tempo fixo"},
-     ],nota:"Adiciona 1 tiro e pace ligeiramente mais rapido vs sem. 1. Referencia: tiro 5 da sem. 2 do ciclo anterior foi 4:23 com facilidade — voce tem capacidade para este pace."},
-    {id:"w2_qui",name:"Quinta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~65 min · progressao",
-     exercicios:[
-      {id:"w2_qui_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10+3*",obs:"+2 kg vs sem. 1. Rest-pause ultima serie."},
-      {id:"w2_qui_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"+5 kg vs sem. 1. SEM rest-pause."},
-      {id:"w2_qui_3",nome:"Leg press anilhas",series:3,reps:"10+3*",obs:"+10 kg vs sem. 1. Rest-pause ultima serie."},
-      {id:"w2_qui_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"+2 kg vs sem. 1."},
-      {id:"w2_qui_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"+2 kg vs sem. 1."},
-      {id:"w2_qui_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"+2 kg vs sem. 1."},
-     ],nota:"Bulgaro e leg press com +2 kg e +10 kg respectivamente. Rest-pause nos dois."},
-    {id:"w2_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade + Panturrilha",meta:"6 exercicios · ~52 min · progressao",
-     exercicios:[
-      {id:"w2_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"+2 kg vs sem. 1."},
-      {id:"w2_sex_2",nome:"Elevacao de pernas suspenso",series:3,reps:"12-15",obs:"+2 reps vs sem. 1 ou progredir para pernas mais estendidas."},
-      {id:"w2_sex_3",nome:"Prancha lateral",series:3,reps:"60 s cada",obs:"+5 s vs sem. 1. Marco do minuto."},
-      {id:"w2_sex_4",nome:"Set conjugado: remador + twist c/ 14 kg",series:3,reps:"12+10 s",obs:"Manter carga — foco na qualidade do twist."},
-      {id:"w2_sex_5",nome:"Perdigueiro com 3 kg",series:3,reps:"30 s cada",obs:"Adicionar pausa de 2 s na posicao extendida."},
-      {id:"w2_sex_6",nome:"Panturrilha em pe (maquina ou halteres)",series:3,reps:"15-20",obs:"+2 kg vs sem. 1 ou +2 reps. Amplitude completa."},
-     ],nota:"Prancha lateral atinge o minuto — proximo ciclo pode introduzir peso. Elevacao de pernas: progrida para pernas mais estendidas se sem. 1 foi bem executada sem impulso. Reserve 10 min de mobilidade."},
-    {id:"w2_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa — Zona 2",meta:"70-75 min · novo maximo",
-     run:[
-      {label:"DURACAO",val:"70-75 min"},
-      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-      {label:"PROGRESSAO",val:"+5 min vs sem. 1 · novo maximo"},
-      {label:"HIDRATACAO",val:"500 ml nas 2h anteriores"},
-     ],nota:"Novo maximo de volume aerobico do ciclo. Principal estimulo para elevacao do HDL."},
-    {id:"w2_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao ativa",
-     nota:"Semana mais exigente ate agora no ciclo 3. Descanse bem — o domingo e onde o musculo e o sistema aerobico consolidam as adaptacoes."},
-  ]},
-  3:{label:"SEM 3 · VIAGEM",type:"travel",days:[
-    {id:"w3_seg",name:"Segunda-feira",tipo:"viag",titulo:"Corrida — Zona 2 Longa",meta:"55-60 min · manutencao aerobica",
-     run:[
-      {label:"DURACAO",val:"55-60 min"},
-      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-      {label:"TERRENO",val:"Plano — rua, calcada ou parque"},
-      {label:"OBJETIVO",val:"Manutencao da base aerobica"},
-     ],nota:"Primeira sessao da semana de viagem. Zona 2 pura — resist a tentacao de forcas o pace. Esta sessao substitui a musculacao de segunda e mantem o estimulo de HDL."},
-    {id:"w3_ter",name:"Terca-feira",tipo:"desc",titulo:"Descanso ou caminhada",meta:"Recuperacao ativa",
-     nota:"Descanso ativo. Caminhada de 30-40 min se quiser se mover. Sem corrida estruturada — deixe o corpo recuperar da sessao de segunda."},
-    {id:"w3_qua",name:"Quarta-feira",tipo:"viag",titulo:"Fartlek — Variacao de ritmo",meta:"40 min · estimulo de intensidade",
-     run:[
-      {label:"AQUECIMENTO",val:"10 min zona 1-2"},
-      {label:"FARTLEK",val:"20 min — alterne 3 min zona 3 + 2 min zona 2 (4 ciclos)"},
-      {label:"VOLTA CALMA",val:"10 min zona 1-2"},
-      {label:"DISTANCIA EST.",val:"~6-7 km"},
-     ],nota:"Fartlek substitui o intervalado estruturado na ausencia de esteira. Sem alvo rigido de pace — use a percepcao de esforco e o Garmin para guiar as zonas. Zona 3 = respiracao forcada mas controlada, consegue falar frases curtas."},
-    {id:"w3_qui",name:"Quinta-feira",tipo:"desc",titulo:"Descanso ou caminhada",meta:"Recuperacao ativa",
-     nota:"Descanso ativo. Explore a cidade caminhando — turismo conta como recuperacao ativa."},
-    {id:"w3_sex",name:"Sexta-feira",tipo:"viag",titulo:"Corrida — Progressao de ritmo",meta:"35-40 min · zona 2-3",
-     run:[
-      {label:"AQUECIMENTO",val:"10 min zona 1-2"},
-      {label:"PRINCIPAL",val:"20-25 min zona 2-3 · pace confortavel-forte"},
-      {label:"VOLTA CALMA",val:"5 min zona 1"},
-      {label:"DISTANCIA EST.",val:"~5-6 km"},
-     ],nota:"Sessao mais curta e moderada. Zona 2-3 — mais intensa que a zona 2 pura de segunda, menos intensa que o fartlek de quarta. Serve de estimulo intermediario para manter o condicionamento."},
-    {id:"w3_sab",name:"Sabado",tipo:"viag",titulo:"Long run leve — Zona 2",meta:"50-55 min · volume de manutencao",
-     run:[
-      {label:"DURACAO",val:"50-55 min"},
-      {label:"FC ALVO",val:"128-142 bpm · zona 2 leve"},
-      {label:"TERRENO",val:"Plano — priorize superficie macia se disponivel"},
-      {label:"HIDRATACAO",val:"Hidrate bem antes — clima local pode ser diferente"},
-     ],nota:"Long run da semana de viagem — volume menor que o habitual (50-55 vs 70-75 min) para compensar a ausencia de musculacao e o cansaco de viagem. Nao force."},
-    {id:"w3_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao completa",
-     nota:"Descanso completo. Semana de viagem com 4 sessoes de corrida e suficiente para manter o condicionamento sem acumular fadiga excessiva."},
-  ]},
-  4:{label:"SEM 4 · VIAGEM",type:"travel",days:[
-    {id:"w4_seg",name:"Segunda-feira",tipo:"viag",titulo:"Corrida — Zona 2 Longa",meta:"60-65 min · progressao de volume",
-     run:[
-      {label:"DURACAO",val:"60-65 min"},
-      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-      {label:"PROGRESSAO",val:"+5 min vs segunda da sem. 3"},
-      {label:"TERRENO",val:"Plano ou levemente ondulado"},
-     ],nota:"Progressao de 5 min na zona 2 longa. Se a sem. 3 correu bem e o corpo respondeu positivamente, este aumento e adequado."},
-    {id:"w4_ter",name:"Terca-feira",tipo:"desc",titulo:"Descanso ou caminhada",meta:"Recuperacao ativa",
-     nota:"Descanso ativo. Caminhada leve de 30-40 min se quiser se mover."},
-    {id:"w4_qua",name:"Quarta-feira",tipo:"viag",titulo:"Intervalado ao ar livre",meta:"43 min · intensidade estruturada",
-     run:[
-      {label:"AQUECIMENTO",val:"10 min zona 1-2"},
-      {label:"TIROS",val:"5x 4 min · zona 4 forte · pace ~4:30-4:45/km"},
-      {label:"RECUPERACAO",val:"1:30 min caminhada ativa entre tiros"},
-      {label:"VOLTA CALMA",val:"6 min zona 1"},
-     ],nota:"Intervalado estruturado ao ar livre na sem. 4 — ja com 5 tiros. Encontre um trecho plano de rua ou pista. Se o terreno for ondulado, use a FC como alvo (zona 4) em vez do pace. Nao pare nas recuperacoes — caminhe ativamente."},
-    {id:"w4_qui",name:"Quinta-feira",tipo:"desc",titulo:"Descanso ou caminhada",meta:"Recuperacao ativa",
-     nota:"Descanse bem apos o intervalado de quarta. O corpo precisa de 24-48h para processar o estimulo de alta intensidade."},
-    {id:"w4_sex",name:"Sexta-feira",tipo:"viag",titulo:"Corrida — Zona 2-3 Moderada",meta:"35-40 min · ritmo de transicao",
-     run:[
-      {label:"AQUECIMENTO",val:"8 min zona 1-2"},
-      {label:"PRINCIPAL",val:"22-27 min zona 2-3 sustentada"},
-      {label:"VOLTA CALMA",val:"5 min zona 1"},
-      {label:"DISTANCIA EST.",val:"~5-6 km"},
-     ],nota:"Sessao moderada antes da long run de sabado. Nao force — o objetivo e chegar no sabado com pernas disponiveis."},
-    {id:"w4_sab",name:"Sabado",tipo:"viag",titulo:"Long run — Zona 2",meta:"55-60 min · preparacao para retorno",
-     run:[
-      {label:"DURACAO",val:"55-60 min"},
-      {label:"FC ALVO",val:"130-145 bpm · zona 2"},
-      {label:"OBJETIVO",val:"Manutencao aerobica pre-retorno a academia"},
-      {label:"HIDRATACAO",val:"500 ml nas 2h anteriores"},
-     ],nota:"Ultima long run da viagem. Volume ligeiramente menor que o habitual para chegar na sem. 5 descansado e pronto para retomar a musculacao com qualidade."},
-    {id:"w4_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao pre-retorno",
-     nota:"Ultimo dia de viagem ou dia de retorno. Descanse completamente — a sem. 5 retoma a musculacao completa e o intervalado estruturado."},
-  ]},
-  5:{label:"SEM 5 · DELOAD",type:"deload",days:[
-    {id:"w5_seg",name:"Segunda-feira",tipo:"musc",titulo:"Peito, Triceps e Ombro",meta:"7 exercicios · ~45 min · deload",
-     exercicios:[
-      {id:"w5_seg_1",nome:"Supino reto com halter",series:3,reps:"10",obs:"Carga da sem. 1 deste ciclo. SEM rest-pause."},
-      {id:"w5_seg_2",nome:"Crucifixo maquina pegada neutra",series:3,reps:"8",obs:"Carga da sem. 1. Amplitude maxima."},
-      {id:"w5_seg_3",nome:"Triceps frances (halter ou barra EZ acima da cabeca)",series:3,reps:"10",obs:"Carga da sem. 1. SEM rest-pause. Amplitude completa."},
-      {id:"w5_seg_4",nome:"Triceps no cross (pushdown corda)",series:3,reps:"12",obs:"Carga reduzida. Deload leve. SEM rest-pause."},
-      {id:"w5_seg_5",nome:"Supino inclinado articulado",series:3,reps:"10",obs:"Carga da sem. 1. Sessao leve."},
-      {id:"w5_seg_6",nome:"Desenvolvimento maquina conjugado c/ flexao",series:3,reps:"10",obs:"Carga reduzida. Preservar ombro."},
-      {id:"w5_seg_7",nome:"Abducao de ombros em pe",series:3,reps:"15",obs:"Carga reduzida. Movimento fluido."},
-     ],nota:"DELOAD: cargas da sem. 1, sem rest-pause. Recuperacao muscular e articular apos 2 semanas de musculacao intensa + 2 semanas de volume de corrida elevado."},
-    {id:"w5_ter",name:"Terca-feira",tipo:"musc",titulo:"Costas e Biceps",meta:"6 exercicios · ~45 min · deload",
-     exercicios:[
-      {id:"w5_ter_1",nome:"Puxada aberta pulley alto",series:3,reps:"10",obs:"Carga da sem. 1. SEM rest-pause."},
-      {id:"w5_ter_2",nome:"Remada sentada baixa neutra",series:3,reps:"10",obs:"Carga da sem. 1. Amplitude escapular."},
-      {id:"w5_ter_3",nome:"Remada unilateral com halter",series:3,reps:"12 cada",obs:"Carga da sem. 1. Corrigir compensacoes tecnicas."},
-      {id:"w5_ter_4",nome:"Rosca direta com barra ou halteres",series:3,reps:"10",obs:"Carga da sem. 1. SEM rest-pause. ROM completo."},
-      {id:"w5_ter_5",nome:"Biceps scott maquina",series:3,reps:"10",obs:"Carga da sem. 1. SEM rest-pause."},
-      {id:"w5_ter_6",nome:"Rosca martelo com halteres",series:3,reps:"12",obs:"Carga reduzida. Finalizador leve."},
-     ],nota:"Deload: sem rest-pause. Use para corrigir compensacoes que apareceram com cargas altas nas sems. 1-2."},
-    {id:"w5_qua",name:"Quarta-feira",tipo:"corr",titulo:"Corrida leve — Deload",meta:"30 min · zona 1-2 apenas",
-     run:[
-      {label:"DURACAO",val:"30 min continuos"},
-      {label:"FC ALVO",val:"Abaixo de 135 bpm · zona 1-2"},
-      {label:"RITMO",val:"Muito confortavel — conversa facil"},
-      {label:"OBJETIVO",val:"Recuperacao ativa, nao estimulo"},
-     ],nota:"Nenhum tiro, nenhuma zona 4. Se sentir cansaco acumulado das 2 semanas de viagem + corrida intensa, substitua por caminhada de 30-40 min."},
-    {id:"w5_qui",name:"Quinta-feira",tipo:"musc",titulo:"Inferiores",meta:"6 exercicios · ~48 min · deload",
-     exercicios:[
-      {id:"w5_qui_1",nome:"Agachamento bulgaro (pe no banco)",series:3,reps:"10",obs:"Carga da sem. 1. SEM rest-pause. Foco em profundidade."},
-      {id:"w5_qui_2",nome:"Elevacao de quadril com barra",series:3,reps:"12",obs:"Carga da sem. 1. Contracao no topo."},
-      {id:"w5_qui_3",nome:"Leg press anilhas",series:3,reps:"10",obs:"Carga da sem. 1. Amplitude total."},
-      {id:"w5_qui_4",nome:"Agachamento sumo c/ halter ou step-up",series:3,reps:"12",obs:"Carga da sem. 1."},
-      {id:"w5_qui_5",nome:"Flexora em pe articulada",series:3,reps:"10",obs:"Carga da sem. 1."},
-      {id:"w5_qui_6",nome:"Cadeira extensora",series:3,reps:"15",obs:"Carga da sem. 1. Sem dor patelofemoral."},
-     ],nota:"Deload de inferiores critico apos semanas de alto volume de corrida — joelhos e quadril precisam de recuperacao."},
-    {id:"w5_sex",name:"Sexta-feira",tipo:"musc",titulo:"Core + Mobilidade + Panturrilha",meta:"5 exercicios · ~35 min · deload",
-     exercicios:[
-      {id:"w5_sex_1",nome:"Pallof press no crossover",series:3,reps:"12 cada",obs:"Carga da sem. 1. Estabilizacao."},
-      {id:"w5_sex_2",nome:"Elevacao de pernas suspenso",series:3,reps:"10-12",obs:"Carga leve — joelhos flexionados. Execucao controlada."},
-      {id:"w5_sex_3",nome:"Prancha lateral",series:3,reps:"35 s cada",obs:"Volta ao tempo inicial."},
-      {id:"w5_sex_4",nome:"Perdigueiro com 3 kg",series:3,reps:"20 s cada",obs:"Sem set conjugado esta semana."},
-      {id:"w5_sex_5",nome:"Panturrilha em pe (maquina ou halteres)",series:3,reps:"15",obs:"Carga da sem. 1. Amplitude completa. Sem forcas."},
-     ],nota:"5 exercicios no deload — sem set conjugado. Reserve 15 min para mobilidade completa: quadril, toracao toracica, tornozelo."},
-    {id:"w5_sab",name:"Sabado",tipo:"corr",titulo:"Corrida longa reduzida — Deload",meta:"45-50 min · zona 2 baixa",
-     run:[
-      {label:"DURACAO",val:"45-50 min"},
-      {label:"FC ALVO",val:"125-138 bpm · zona 2 baixa"},
-      {label:"REDUCAO",val:"~25 min a menos que a sem. 2"},
-      {label:"TERRENO",val:"Plano — sem esforco extra"},
-     ],nota:"Deload aerobico: zona 2 baixa (125-138 bpm). O volume aerobico acumulado nas 4 semanas anteriores continua gerando adaptacao — o deload nao perde esse ganho."},
-    {id:"w5_dom",name:"Domingo",tipo:"desc",titulo:"Descanso total",meta:"Recuperacao completa — fim do ciclo 3",
-     nota:"Fim do Ciclo 3. Avalie fazer exame de sangue nas proximas semanas para monitorar HDL — apos 5 semanas de zona 2 estruturada o resultado deve ser melhor que o marco/2026 (32 mg/dL). Na sem. 6 o ciclo 4 reinicia com cargas acima dos maximos da sem. 2."},
-  ]}
+const START=new Date(2026,9,19); // seg 19/out
+const WEEKS=[
+ {n:1,dates:'19–25 out',tag:'Retomada',rir:'RIR 2',tempo:'Descida 3 s',rp:false,dl:false,run:{tue:30,thu:30,sat:40}},
+ {n:2,dates:'26 out–1 nov',tag:'Retomada',rir:'RIR 2',tempo:'Descida 3 s',rp:false,dl:false,run:{tue:30,thu:35,sat:50}},
+ {n:3,dates:'2–8 nov',tag:'Construção',rir:'RIR 1–2',tempo:'Descida 2 s',rp:true,dl:false,run:{tue:35,int:[5,2,2],sat:55}},
+ {n:4,dates:'9–15 nov',tag:'Construção',rir:'RIR 1',tempo:'Descida 2 s',rp:true,dl:false,run:{tue:35,int:[6,3,2],sat:65}},
+ {n:5,dates:'16–22 nov',tag:'Pico',rir:'RIR 0–1',tempo:'Descida 2 s',rp:true,dl:false,run:{tue:40,strides:true,int:[4,5,2],sat:75}},
+ {n:6,dates:'23–29 nov',tag:'Deload',rir:'RIR 3',tempo:'Normal',rp:false,dl:true,run:{tue:30,int:[4,2,2],sat:45}}
+];
+// [nome, séries, reps, descanso(s), nota, flags]  flags: rp=rest-pause elegível, sup=supino, s3=a partir da S3
+const LIFTS={
+ pull:{title:'Pull',sub:'Costas e bíceps',c:'var(--pull)',ex:[
+  ['Barra fixa pronada (ou puxada alta)',4,'6–10',150,'Dorsal, plano vertical. Fez 10 em todas, adicione carga.'],
+  ['Remada unilateral com halter, apoio no banco',3,'8–10',90,'Dorsal, plano horizontal. Cotovelo junto ao corpo, 1 s no topo.'],
+  ['Remada com peito apoiado, pegada aberta',3,'10–12',90,'Parte alta das costas: romboides e trapézio médio.'],
+  ['Face pull na corda',3,'15',60,'Deltoide posterior e manguito rotador.'],
+  ['Rosca inclinada com halteres',3,'10–12',75,'Bíceps, cabeça longa.'],
+  ['Rosca Scott',2,'10–12',60,'Bíceps, cabeça curta.','rp'],
+  ['Rosca martelo',2,'12',60,'Braquial e braquiorradial.','rp']]},
+ push:{title:'Push',sub:'Peito, ombros e tríceps',c:'var(--push)',ex:[
+  ['Supino reto com barra',4,'5–8',180,'Peito, porção média. Fez 4 × 8, sobe 2,5 kg.','sup'],
+  ['Supino inclinado com halteres (30°)',3,'8–10',120,'Peito, porção superior.'],
+  ['Crucifixo no cabo, altura do peito',2,'12–15',60,'Peito alongado, sem tríceps.','rp'],
+  ['Elevação lateral no cabo, unilateral',4,'12–15',45,'Deltoide lateral. Alterne com o francês para ganhar tempo.'],
+  ['Tríceps francês no cabo, acima da cabeça',3,'10–12',75,'Tríceps, cabeça longa.'],
+  ['Tríceps na polia com barra V',2,'10–12',60,'Tríceps, cabeça lateral.'],
+  ['Tríceps unilateral na polia, pegada supinada',2,'12–15',45,'Tríceps, cabeça medial.','rp']]},
+ lower:{title:'Inferiores',sub:'Pernas e glúteos',c:'var(--lower)',ex:[
+  ['Agachamento livre',4,'6–8',180,'Quadríceps e glúteos. Descida controlada.'],
+  ['Levantamento terra romeno',3,'8–10',150,'Posteriores e glúteos.'],
+  ['Agachamento búlgaro com halteres',3,'8–10 / perna',90,'Estabilidade de quadril e joelho para a corrida.'],
+  ['Mesa flexora',3,'10–12',60,'Posteriores, flexão do joelho.','rp']]},
+ core:{title:'Core',sub:'Core, panturrilhas e mobilidade',c:'var(--core)',ex:[
+  ['Roda abdominal',3,'8–10',60,'Antiextensão. Em par com panturrilha em pé.'],
+  ['Panturrilha em pé',4,'10–15',60,'Gastrocnêmio. 2 s de pausa embaixo.'],
+  ['Pallof press no cabo',3,'10 / lado',45,'Antirrotação. Em par com panturrilha sentado.'],
+  ['Panturrilha sentado',3,'15',45,'Sóleo.'],
+  ['Marcha no lugar com carga unilateral',3,'30–40 s / lado',45,'Antiflexão lateral. Halter numa mão, ombros nivelados, joelho até o quadril, 1 s em cima.'],
+  ['Elevação de tíbia',2,'15',45,'Tibial anterior.'],
+  ['Saltitos no lugar (pogo hops)',3,'20',60,'Contato rápido com o solo.','s3'],
+  ['Mobilidade de quadril e tornozelo',1,'10 min',0,'90/90, joelho na parede, flexor do quadril.']]}
 };
+const DAYS=[
+ {k:'seg',l:'Seg',type:'pull'},{k:'ter',l:'Ter',type:'push'},{k:'qua',l:'Qua',type:'lower'},
+ {k:'qui',l:'Qui',type:'thu'},{k:'sex',l:'Sex',type:'core'},{k:'sab',l:'Sáb',type:'sat'},{k:'dom',l:'Dom',type:'rest'}
+];
+function get(k){try{return localStorage.getItem('c4:'+k)}catch(e){return null}}
+function set(k,v){try{if(v===''||v==null)localStorage.removeItem('c4:'+k);else localStorage.setItem('c4:'+k,v)}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function fmtRest(s){if(!s)return'';return s>=60?(s%60?Math.floor(s/60)+':'+String(s%60).padStart(2,'0'):s/60+' min'):s+' s'}
+function toast(t){const e=document.getElementById('toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,1800)}
 
-let currentWeek=1;
-let state={};
+const today=new Date();today.setHours(0,0,0,0);
+const diff=Math.floor((today-START)/864e5);
+let W=Math.min(6,Math.max(1,Math.floor(diff/7)+1));
+let D=diff>=0&&diff<42?((today.getDay()+6)%7):0;
+const sw=parseInt(get('ui:w')),sd=parseInt(get('ui:d'));
+if(sw&&get('ui:date')===today.toDateString()){W=sw;D=isNaN(sd)?D:sd}
 
-function loadState(){try{const r=localStorage.getItem('treino_ciclo3');state=r?JSON.parse(r):{};}catch(e){state={};}}
-function saveState(){try{localStorage.setItem('treino_ciclo3',JSON.stringify(state));}catch(e){}}
-function getSetState(exId,si){if(!state[exId])state[exId]={sets:{}};if(!state[exId].sets[si])state[exId].sets[si]={kg:'',done:false};return state[exId].sets[si];}
-
-function render(){renderTabs();renderDays();updateProgress();}
-
-function renderTabs(){
-  document.getElementById('weekTabs').innerHTML=Object.keys(WEEKS).map(wk=>{
-    const w=WEEKS[wk];
-    const cls=`week-tab ${parseInt(wk)===currentWeek?'active':''} ${w.type==='travel'?'travel':''} ${w.type==='deload'?'deload':''}`;
-    return `<button class="${cls}" onclick="switchWeek(${wk})">${w.label}</button>`;
-  }).join('');
+const STEP=[0,.34,.5,.75,1,0];
+function target(reps){
+  const m=String(reps).match(/^(\d+)–(\d+)(.*)$/);
+  if(!m)return reps;
+  const lo=+m[1],hi=+m[2];return Math.round(lo+(hi-lo)*STEP[W-1])+m[3];
 }
+function weekObj(){return WEEKS[W-1]}
+function nSets(s,w){return w.dl?Math.max(1,Math.round(s*0.6)):s}
 
-function switchWeek(wk){currentWeek=parseInt(wk);renderTabs();renderDays();updateProgress();}
-
-function renderDays(){
-  document.getElementById('daysContainer').innerHTML=WEEKS[currentWeek].days.map(d=>renderDay(d)).join('');
+function renderNav(){
+  document.getElementById('weeks').innerHTML=WEEKS.map(w=>`<button class="chip" type="button" data-w="${w.n}" aria-pressed="${w.n===W}">S${w.n}<small>${w.dates}</small></button>`).join('');
+  document.getElementById('days').innerHTML=DAYS.map((d,i)=>{const c=d.type==='thu'||d.type==='sat'?'var(--run)':d.type==='rest'?'var(--rest)':LIFTS[d.type].c;
+    const dt=new Date(START);dt.setDate(dt.getDate()+(W-1)*7+i);
+    return `<button class="chip" type="button" style="--c:${c}" data-d="${i}" aria-pressed="${i===D}">${d.l}<small>${dt.getDate()}/${dt.getMonth()+1}</small></button>`}).join('');
+  const w=weekObj();document.getElementById('sub').textContent=`Semana ${W} · ${w.tag}`;
+  document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{W=+b.dataset.w;save();render()});
+  document.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{D=+b.dataset.d;save();render()});
+  const a=document.querySelector('.days [aria-pressed="true"]');if(a)a.scrollIntoView({inline:'center',block:'nearest'});
 }
+function save(){set('ui:w',W);set('ui:d',D);set('ui:date',today.toDateString())}
 
-function renderDay(day){
-  const isTravel=day.tipo==='viag';
-  const bc=day.tipo==='musc'?'badge-musc':day.tipo==='corr'?'badge-corr':day.tipo==='viag'?'badge-viag':'badge-desc';
-  const bl=day.tipo==='musc'?'MUSCULACAO':day.tipo==='corr'?'CORRIDA':day.tipo==='viag'?'VIAGEM':'DESCANSO';
-  const {total,done}=getDayProgress(day);
-  const pct=total>0?Math.round((done/total)*100):0;
-  const C=2*Math.PI*12,offset=C-(pct/100)*C;
-  const isComplete=total>0&&done===total;
-  const ring=total>0?`<div class="day-progress-ring"><svg width="32" height="32" viewBox="0 0 32 32"><circle class="ring-bg" cx="16" cy="16" r="12"/><circle class="ring-fill" cx="16" cy="16" r="12" stroke-dasharray="${C}" stroke-dashoffset="${offset}" stroke="${isComplete?'var(--success)':'var(--accent)'}"/></svg><div class="ring-text">${pct}%</div></div>`:`<div style="width:32px"></div>`;
-  let body='';
-  if(day.tipo==='musc'&&day.exercicios) body=`<div class="ex-list">${day.exercicios.map(ex=>renderEx(ex)).join('')}</div>`;
-  else if((day.tipo==='corr'||day.tipo==='viag')&&day.run) body=`<div class="run-block">${day.run.map(r=>`<div class="run-row"><span class="run-label">${r.label}</span><span class="run-val ${isTravel?'travel':''}">${r.val}</span></div>`).join('')}</div>`;
-  else body=`<div class="rest-block">✦ Descanso — sem treino estruturado</div>`;
-  if(day.nota) body+=`<div class="nota-block ${isTravel?'travel':''}"><div class="nota-label">NOTA</div>${day.nota}</div>`;
-  return `<div class="day-card ${isComplete?'completed':''}" id="card_${day.id}"><div class="day-header" onclick="toggleDay('${day.id}')"><span class="day-badge ${bc}">${bl}</span><div class="day-info"><div class="day-name">${day.name} — ${day.titulo}</div><div class="day-meta">${day.meta}</div></div>${ring}<span class="chevron" id="chev_${day.id}">▾</span></div><div class="day-body" id="body_${day.id}">${body}</div></div>`;
+function liftDay(type,dk){
+  const L=LIFTS[type],w=weekObj();
+  let h=`<div class="dayhead" style="--c:${L.c}"><h2>${L.title}${type==='push'?' + corrida Z2':''}</h2><p>${L.sub}</p>
+   <div class="meta"><span class="tag hi">${w.rir}</span><span class="tag">${w.tempo}</span>${w.rp?'<span class="tag">Rest-pause nos marcados</span>':''}${w.dl?'<span class="tag hi">Deload: −10% carga</span>':''}</div></div>
+   <div class="progress"><i id="prog"></i></div>`;
+  L.ex.forEach((e,i)=>{
+    const [name,s0,reps,rest,note,flag]=e;
+    if(flag==='s3'&&W<3)return;
+    const ns=nSets(s0,w);const tg=target(reps);
+    let nt=note;
+    if(flag==='sup'&&W<=2)nt+=' Pausa de 1 s no peito na 1ª repetição.';
+    if(flag==='rp'&&w.rp)nt+=' <b style="color:var(--accent)">Rest-pause na última série.</b>';
+    const base=`w${W}:${dk}:${i}`,prev=`w${W-1}:${dk}:${i}`;
+    let rows='';
+    for(let s=1;s<=ns;s++){
+      const kg=get(`${base}:${s}:kg`)||'',rp=get(`${base}:${s}:r`)||'',ok=get(`${base}:${s}:ok`)==='1';
+      const pk=W>1?(get(`${prev}:${s}:kg`)||get(`${prev}:1:kg`)||''):'';
+      const pr=W>1?(get(`${prev}:${s}:r`)||''):'';
+      rows+=`<span class="s">${s}</span><span class="meta-r">${esc(tg)}</span>
+       <input id="${base}:${s}:kg" data-k="${base}:${s}:kg" inputmode="decimal" placeholder="${pk?esc(pk)+' kg':'kg'}" value="${esc(kg)}" aria-label="${esc(name)} série ${s} carga">
+       <input id="${base}:${s}:r" data-k="${base}:${s}:r" inputmode="numeric" placeholder="${esc(tg.replace(/[^0-9].*$/,''))}" value="${esc(rp)}" aria-label="${esc(name)} série ${s} repetições feitas">
+       <button class="ok" type="button" data-ok="${base}:${s}:ok" aria-pressed="${ok}" aria-label="Série ${s} feita">✓</button>`;
+    }
+    h+=`<article class="ex" data-ex="${base}">
+      <div class="exhead"><h3><span class="n">${i+1}</span>${esc(name)}</h3><span class="presc">${ns} × ${esc(tg)}</span></div>
+      <p class="exnote">${nt}${tg!==reps?` <span style="opacity:.75">Faixa do ciclo: ${esc(reps)}.</span>`:''}</p>
+      <div class="sets"><span class="h">Sér.</span><span class="h">Meta</span><span class="h">Carga</span><span class="h">Fez</span><span></span>${rows}</div>
+      <div class="rest"><span class="tag">${rest?'Descanso '+fmtRest(rest):'Sem descanso'}</span>${rest?`<button class="timer" type="button" data-t="${rest}">▶ ${fmtRest(rest)}</button>`:''}</div>
+      <textarea id="${base}:note" data-k="${base}:note" rows="1" placeholder="Anotação (ex.: ajuste do banco, sensação)">${esc(get(base+':note')||'')}</textarea>
+    </article>`;
+  });
+  if(type==='push'){h+=runCard(dk,'Corrida Z2',easy(w.run.tue,w.run.strides),'Corra de manhã e treine à tarde, ou corra logo depois da musculação.')}
+  return h;
 }
-
-function renderEx(ex){
-  const allDone=Array.from({length:ex.series},(_,si)=>getSetState(ex.id,si).done).every(Boolean);
-  let sets=`<div class="sets-header"><span style="text-align:center">SET</span><span style="text-align:center">KG</span><span style="text-align:center">REPS</span><span></span></div>`;
-  for(let si=0;si<ex.series;si++){
-    const ss=getSetState(ex.id,si);
-    sets+=`<div class="set-row" id="setrow_${ex.id}_${si}"><span class="set-num">${si+1}</span><input class="set-input ${ss.kg?'filled':''}" type="number" inputmode="decimal" placeholder="—" value="${ss.kg}" onchange="setKg('${ex.id}',${si},this.value)" onfocus="this.select()"/><div style="font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;padding:7px 4px">${ex.reps}</div><button class="set-done-btn ${ss.done?'done':''}" onclick="toggleSetDone('${ex.id}',${si})"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></button></div>`;
+function easy(min,str){const m=str?min-8:min;return `<div class="seg z2">${m} min em Z2 · FC ≤ 137 bpm</div>${str?'<div class="seg">6 × 20 s strides · 60 s caminhando</div>':''}`}
+function intervals(r){return `<div class="seg z2">10 min aquecimento Z2</div><div class="seg z4">${r[0]} × ${r[1]} min em Z4 · 155–176 bpm</div><div class="seg">${r[2]} min trotando entre os tiros</div><div class="seg z2">8 min desaquecimento</div>`}
+function runCard(dk,title,body,note){
+  const b=`w${W}:${dk}:run`;
+  const f=(k,l,ph)=>`<label>${l}<input id="${b}:${k}" data-k="${b}:${k}" placeholder="${ph}" value="${esc(get(b+':'+k)||'')}"></label>`;
+  const ok=get(b+':ok')==='1';
+  return `<article class="ex" data-ex="${b}"><div class="exhead"><h3>${title}</h3><button class="ok" type="button" data-ok="${b}:ok" aria-pressed="${ok}" aria-label="Corrida feita">✓</button></div>
+   <div class="run">${body}</div>${note?`<p class="exnote">${note}</p>`:''}
+   <div class="fields">${f('km','Distância','km')}${f('pace','Pace médio','min/km')}${f('fc','FC média','bpm')}</div>
+   <textarea id="${b}:note" data-k="${b}:note" rows="1" placeholder="Como foi (clima, sensação)">${esc(get(b+':note')||'')}</textarea></article>`;
+}
+function render(){
+  renderNav();
+  const d=DAYS[D],w=weekObj(),m=document.getElementById('main');let h='';
+  if(LIFTS[d.type])h=liftDay(d.type,d.k);
+  else if(d.type==='thu'){
+    h=`<div class="dayhead" style="--c:var(--run)"><h2>${w.run.int?'Intervalado':'Corrida Z2'}</h2><p>${w.run.int?'Esteira · tiros com alvo de FC':'Ainda sem tiros nesta semana'}</p></div>`;
+    h+=runCard(d.k,w.run.int?'Intervalado na esteira':'Corrida Z2',w.run.int?intervals(w.run.int):easy(w.run.thu),w.run.int?'Blocos com alvo em Z4 e recuperação por tempo fixo, como já está no Garmin.':'Se a FC subir rápido, caminhe 1 min e retome.');
+  }else if(d.type==='sat'){
+    h=`<div class="dayhead" style="--c:var(--run)"><h2>Longão Z2</h2><p>${w.run.sat} minutos · FC ≤ 137 bpm</p></div>`;
+    h+=runCard(d.k,'Longão',easy(w.run.sat),'Saia cedo, antes das 7h se possível. 400–500 ml de água na hora anterior.'+(w.run.sat>=60?' Leve água com eletrólitos.':''));
+  }else{
+    h=`<div class="dayhead" style="--c:var(--rest)"><h2>Descanso</h2><p>Caminhada leve de 30–40 min, se quiser.</p></div>
+     <article class="ex"><p class="exnote">Priorize o sono. Confira HRV e Body Battery amanhã cedo para calibrar a semana.</p>
+     <textarea id="w${W}:dom:note" data-k="w${W}:dom:note" rows="2" placeholder="Anotações da semana (peso, sono, sensações)">${esc(get(`w${W}:dom:note`)||'')}</textarea></article>`;
   }
-  if(ex.obs) sets+=`<div class="ex-obs">${ex.obs}</div>`;
-  return `<div class="ex-item ${allDone?'ex-done':''}" id="exitem_${ex.id}"><div class="ex-top" onclick="toggleEx('${ex.id}')"><div class="ex-check ${allDone?'checked':''}" id="excheck_${ex.id}" onclick="event.stopPropagation();toggleExDone('${ex.id}',${ex.series})"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1"/></svg></div><div class="ex-info"><div class="ex-name">${ex.nome}</div><div class="ex-specs">${ex.series}x${ex.reps}</div></div><span class="ex-expand" id="exexp_${ex.id}">▾</span></div><div class="ex-sets" id="exsets_${ex.id}">${sets}</div></div>`;
+  m.innerHTML=h;
+  m.querySelectorAll('[data-k]').forEach(el=>el.addEventListener('input',()=>set(el.dataset.k,el.value.trim())));
+  m.querySelectorAll('[data-ok]').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);set(b.dataset.ok,on?'1':'');
+    const t=b.closest('.ex').querySelector('.timer');if(on&&t&&!t.classList.contains('on'))t.click();prog()});
+  m.querySelectorAll('.timer').forEach(t=>t.onclick=()=>timer(t));
+  prog();window.scrollTo({top:0});
 }
-
-function toggleDay(id){const b=document.getElementById('body_'+id),c=document.getElementById('chev_'+id);const o=b.classList.toggle('open');if(c)c.classList.toggle('open',o);}
-function toggleEx(id){const s=document.getElementById('exsets_'+id),e=document.getElementById('exexp_'+id);const o=s.classList.toggle('open');if(e)e.classList.toggle('open',o);}
-function setKg(exId,si,val){getSetState(exId,si).kg=val;const inp=document.querySelector(`#setrow_${exId}_${si} .set-input`);if(inp)inp.classList.toggle('filled',!!val);saveState();}
-function toggleSetDone(exId,si){const ss=getSetState(exId,si);ss.done=!ss.done;const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);if(btn)btn.classList.toggle('done',ss.done);refreshExDone(exId);updateProgress();saveState();}
-function toggleExDone(exId,n){const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);const allDone=Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));const nd=!allDone;for(let si=0;si<n;si++){getSetState(exId,si).done=nd;const btn=document.querySelector(`#setrow_${exId}_${si} .set-done-btn`);if(btn)btn.classList.toggle('done',nd);}refreshExDone(exId);updateProgress();saveState();}
-function refreshExDone(exId){const rows=document.querySelectorAll(`[id^="setrow_${exId}_"]`);const allDone=rows.length>0&&Array.from(rows).every(r=>r.querySelector('.set-done-btn.done'));const ck=document.getElementById('excheck_'+exId),it=document.getElementById('exitem_'+exId);if(ck)ck.classList.toggle('checked',allDone);if(it)it.classList.toggle('ex-done',allDone);const wk=WEEKS[currentWeek];for(const day of wk.days){if(!day.exercicios)continue;if(day.exercicios.some(ex=>ex.id===exId)){updateDayRing(day);break;}}}
-function updateDayRing(day){const{total,done}=getDayProgress(day);const pct=total>0?Math.round((done/total)*100):0;const C=2*Math.PI*12,offset=C-(pct/100)*C;const isComplete=total>0&&done===total;const ring=document.querySelector(`#card_${day.id} .ring-fill`);const text=document.querySelector(`#card_${day.id} .ring-text`);const card=document.getElementById('card_'+day.id);if(ring){ring.style.strokeDashoffset=offset;ring.style.stroke=isComplete?'var(--success)':'var(--accent)';}if(text)text.textContent=pct+'%';if(card)card.classList.toggle('completed',isComplete);}
-function getDayProgress(day){if(!day.exercicios)return{total:0,done:0};let t=0,d=0;for(const ex of day.exercicios)for(let si=0;si<ex.series;si++){t++;if(getSetState(ex.id,si).done)d++;}return{total:t,done:d};}
-function updateProgress(){const wk=WEEKS[currentWeek];let t=0,d=0;for(const day of wk.days){const p=getDayProgress(day);t+=p.total;d+=p.done;}const pct=t>0?Math.round((d/t)*100):0;document.getElementById('progressInfo').textContent=`${d} / ${t} sets`;document.getElementById('progressBar').style.width=pct+'%';}
-function saveAll(){saveState();showToast('salvo ✓');}
-function confirmReset(){if(confirm('Resetar checagens desta semana? Os pesos salvos serao mantidos.')){const wk=WEEKS[currentWeek];for(const day of wk.days){if(!day.exercicios)continue;for(const ex of day.exercicios)for(let si=0;si<ex.series;si++)getSetState(ex.id,si).done=false;}saveState();renderDays();updateProgress();showToast('semana resetada ✓');}}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-
-loadState();render();
+function prog(){
+  const p=document.getElementById('prog');document.querySelectorAll('.ex').forEach(ex=>{const b=ex.querySelectorAll('[data-ok]');ex.classList.toggle('complete',b.length&&[...b].every(x=>x.getAttribute('aria-pressed')==='true'))});
+  if(!p)return;const all=document.querySelectorAll('.sets [data-ok]'),d=[...all].filter(x=>x.getAttribute('aria-pressed')==='true').length;p.style.width=(all.length?d/all.length*100:0)+'%';
+}
+let tm=null;
+function timer(btn){
+  document.querySelectorAll('.timer.on').forEach(b=>{if(b!==btn){b.classList.remove('on');b.textContent='▶ '+fmtRest(+b.dataset.t)}});
+  clearInterval(tm);
+  if(btn.classList.contains('on')){btn.classList.remove('on');btn.textContent='▶ '+fmtRest(+btn.dataset.t);return}
+  let left=+btn.dataset.t;btn.classList.add('on');
+  const tick=()=>{btn.textContent='■ '+Math.floor(left/60)+':'+String(left%60).padStart(2,'0');
+    if(left--<=0){clearInterval(tm);btn.classList.remove('on');btn.textContent='▶ '+fmtRest(+btn.dataset.t);toast('Descanso encerrado');try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}}};
+  tick();tm=setInterval(tick,1000);
+}
+document.getElementById('bExp').onclick=async()=>{
+  const o={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.startsWith('c4:w'))o[k]=localStorage.getItem(k)}}catch(e){}
+  const s=JSON.stringify(o);try{await navigator.clipboard.writeText(s);toast('Backup copiado. Cole no Notas.')}catch(e){const w=document.getElementById('bkWrap');w.hidden=false;const t=document.getElementById('bk');t.value=s;t.select();toast('Selecione e copie o texto')}
+};
+document.getElementById('bImp').onclick=()=>{
+  const w=document.getElementById('bkWrap'),t=document.getElementById('bk');
+  if(w.hidden||!t.value.trim()){w.hidden=false;t.value='';t.focus();return}
+  try{const o=JSON.parse(t.value);let n=0;Object.keys(o).forEach(k=>{if(k.startsWith('c4:w')){localStorage.setItem(k,o[k]);n++}});w.hidden=true;toast(n+' registros restaurados');render()}catch(e){toast('Backup inválido. Cole o texto completo.')}
+};
+render();
 </script>
 </body>
 </html>
